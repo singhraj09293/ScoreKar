@@ -4,6 +4,10 @@ class MatchState {
   final List<Ball> balls;
 
   MatchState.fromBalls(this.balls);
+  MatchState undo() {
+    if (balls.isEmpty) return this;
+    return MatchState.fromBalls(balls.sublist(0, balls.length - 1));
+  }
 
   int get totalRuns => balls.fold(
     0,

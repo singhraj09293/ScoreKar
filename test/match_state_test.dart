@@ -38,8 +38,16 @@ void main() {
     // final ball = [Ball(run: 1)];
     // final ball = [Ball(run: 4)];
     // final ball = List.generate(6, (_) => Ball(run: 0));
-    final balls = [Ball(run: 1), ...List.generate(5, (_) => Ball(run: 0))]; 
+    final balls = [Ball(run: 1), ...List.generate(5, (_) => Ball(run: 0))];
     final state = MatchState.fromBalls(balls);
     expect(state.strikerIndex, 0);
+  });
+  test('undo ball', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 1),
+      Ball(run: 4),
+      Ball(run: 6),
+    ]);
+    expect(state.undo().totalRuns, 5);
   });
 }
