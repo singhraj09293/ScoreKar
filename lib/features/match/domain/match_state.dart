@@ -20,4 +20,20 @@ class MatchState {
       )
       .length;
   String get overs => '${legalBalls ~/ 6}.${legalBalls % 6}';
+  int get strikerIndex {
+    int striker = 0;
+    int legalCount = 0;
+    for (final ball in balls) {
+      if (ball.run % 2 != 0) {
+        striker = 1 - striker;
+      }
+      if (ball.type != BallType.wide && ball.type != BallType.noBall) {
+        legalCount = legalCount + 1;
+        if (legalCount % 6 == 0) {
+          striker = 1 - striker;
+        }
+      }
+    }
+    return striker;
+  }
 }

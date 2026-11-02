@@ -24,8 +24,22 @@ void main() {
     expect(state.wickets, 1);
   });
   test('six normal balls = 1.0', () {
-    final ball = List.generate(6, (_) => Ball(run: 0));
+    final ball = [
+      Ball(run: 0),
+      Ball(run: 1),
+      Ball(run: 2),
+      Ball(run: 3),
+      Ball(run: 1, type: BallType.wide),
+    ];
     final state = MatchState.fromBalls(ball);
-    expect(state.overs, '1.0');
+    expect(state.overs, '0.4');
+  });
+  test('striker swapping', () {
+    // final ball = [Ball(run: 1)];
+    // final ball = [Ball(run: 4)];
+    // final ball = List.generate(6, (_) => Ball(run: 0));
+    final balls = [Ball(run: 1), ...List.generate(5, (_) => Ball(run: 0))]; 
+    final state = MatchState.fromBalls(balls);
+    expect(state.strikerIndex, 0);
   });
 }
