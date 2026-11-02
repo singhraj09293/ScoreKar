@@ -7,6 +7,6 @@ class MatchState {
 
   int get totalRuns => balls.fold(
     0,
-    (sum, balls) => sum + balls.run + (balls.type ==BallType.wide ? 1 : 0),
+    (sum, balls) => sum + balls.run + (balls.type ==BallType.wide ? 1 : 0)+(balls.type==BallType.noBall ? 1:0),
   );
 }
