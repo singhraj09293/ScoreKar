@@ -5,5 +5,8 @@ class MatchState {
 
   MatchState.fromBalls(this.balls);
 
-  int get totalRuns => balls.fold(0, (runs, sum)=>runs+sum.run);
+  int get totalRuns => balls.fold(
+    0,
+    (sum, balls) => sum + balls.run + (balls.type ==BallType.wide ? 1 : 0),
+  );
 }
