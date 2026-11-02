@@ -14,18 +14,74 @@ class _ScorePageState extends ConsumerState<ScorePage> {
   @override
   Widget build(BuildContext context) {
     final totalscore = ref.watch(matchProvider);
+    List<int> runs = [0, 1, 2, 4, 6];
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('${totalscore.totalRuns} score'),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration:BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white
+              ),
+              child:Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Score Board'),
+                  Text('${totalscore.totalRuns}/${totalscore.wickets}'),
+                  Text('${totalscore.overs} overs')
+                ],
+              ),
+            ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(matchProvider.notifier).addBall(Ball(run: 1));
-              },
-              child: Text('Increase Score'),
+            Wrap(
+              children: [
+                ...runs.map(
+                  (n) => ElevatedButton(
+                    onPressed: () =>
+                        ref.read(matchProvider.notifier).addBall(Ball(run: n)),
+                    child: Text('$n'),
+                  ),
+                ),
+                SizedBox(height: 5),
+                ElevatedButton(
+                  onPressed: () {
+                    ref.read(matchProvider.notifier).undo();
+                  },
+                  child: Text('Undo'),
+                ),
+                SizedBox(height: 5),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        ref
+                            .read(matchProvider.notifier)
+                            .addBall(Ball(run: 0, type: BallType.wide));
+                      },
+                      child: Text('Wide'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        ref
+                            .read(matchProvider.notifier)
+                            .addBall(Ball(run: 0, type: BallType.noBall));
+                      },
+                      child: Text('no Ball'),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(matchProvider.notifier)
+                        .addBall(Ball(run: 0, type: BallType.wicket));
+                  },
+                  child: Text('Wickett!'),
+                ),
+              ],
             ),
           ],
         ),
