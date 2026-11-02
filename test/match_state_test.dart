@@ -18,4 +18,9 @@ void main() {
     final state = MatchState.fromBalls(ball);
     expect(state.totalRuns, 5);
   });
+  test('wicket counts', () {
+    final ball = [Ball(run: 0), Ball(run: 1, type: BallType.wicket)];
+    final state = MatchState.fromBalls(ball);
+    expect(state.wickets, 1);
+  });
 }
