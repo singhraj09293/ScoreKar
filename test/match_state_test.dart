@@ -50,4 +50,9 @@ void main() {
     ]);
     expect(state.undo().totalRuns, 5);
   });
+  test('inning over', () {
+    final balls = List.generate(30, (_) => Ball(run: 0));
+    final state = MatchState.fromBalls(balls);
+    expect(state.isInningOver, true);
+  });
 }

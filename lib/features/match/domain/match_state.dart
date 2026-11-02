@@ -40,4 +40,6 @@ class MatchState {
     }
     return striker;
   }
+
+  bool get isInningOver => legalBalls >= 30;
 }
