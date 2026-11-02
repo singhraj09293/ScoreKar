@@ -23,4 +23,9 @@ void main() {
     final state = MatchState.fromBalls(ball);
     expect(state.wickets, 1);
   });
+  test('six normal balls = 1.0', () {
+    final ball = List.generate(6, (_) => Ball(run: 0));
+    final state = MatchState.fromBalls(ball);
+    expect(state.overs, '1.0');
+  });
 }
