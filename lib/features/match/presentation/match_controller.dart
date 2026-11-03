@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
+import 'package:scorekar/features/match/domain/match_info.dart';
 import 'package:scorekar/features/match/domain/match_state.dart';
 
 class MatchController extends Notifier<MatchState> {
@@ -19,4 +20,19 @@ class MatchController extends Notifier<MatchState> {
 
 final matchProvider = NotifierProvider<MatchController, MatchState>(
   MatchController.new,
+);
+
+class MatchInfoController extends Notifier<MatchInfo> {
+  @override
+  MatchInfo build() {
+    return MatchInfo(teamA: 'Team A', teamB: 'Team B');
+  }
+
+  void setTeam(String a, String b) {
+    state = MatchInfo(teamA: a, teamB: b);
+  }
+}
+
+final matchinfoProvider = NotifierProvider<MatchInfoController, MatchInfo>(
+  MatchInfoController.new,
 );

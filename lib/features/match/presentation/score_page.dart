@@ -4,7 +4,9 @@ import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/presentation/match_controller.dart';
 
 class ScorePage extends ConsumerStatefulWidget {
-  const ScorePage({super.key});
+  final String a;
+  final String b;
+  const ScorePage({super.key, required this.a, required this.b});
 
   @override
   ConsumerState<ScorePage> createState() => _ScorePageState();
@@ -13,77 +15,51 @@ class ScorePage extends ConsumerStatefulWidget {
 class _ScorePageState extends ConsumerState<ScorePage> {
   @override
   Widget build(BuildContext context) {
-    final totalscore = ref.watch(matchProvider);
+    final batters = ['Ravi', 'Amit'];
+    final score = ref.watch(matchProvider);
     List<int> runs = [0, 1, 2, 4, 6];
+    final strikerIdx = score.strikerIndex;
+    final nonStrikerIdx = 1 - score.strikerIndex;
     return Scaffold(
-      body: Center(
-        child:totalscore.isInningOver ? Text('Inning Over'): Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration:BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white
+      appBar: AppBar(
+        title: Text(
+          'Live Scoring Console',
+          style: TextStyle(color: Color(0xff918A80)),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                widget.a,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xff918A80),
+                  letterSpacing: 2,
+                ),
               ),
-              child:Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Score Board'),
-                  Text('${totalscore.totalRuns}/${totalscore.wickets}'),
-                  Text('${totalscore.overs} overs')
-                ],
+              SizedBox(height: 5),
+              Text(
+                '${batters[strikerIdx]}*',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
               ),
-            ),
-            SizedBox(height: 20),
-            Wrap(
-              children: [
-                ...runs.map(
-                  (n) => ElevatedButton(
-                    onPressed: totalscore.isInningOver ? null :  () =>
-                        ref.read(matchProvider.notifier).addBall(Ball(run: n)),
-                    child: Text('$n'),
-                  ),
-                ),
-                SizedBox(height: 5),
-                ElevatedButton(
-                  onPressed:totalscore.isInningOver ? null : () {
-                    ref.read(matchProvider.notifier).undo();
-                  },
-                  child: Text('Undo'),
-                ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: totalscore.isInningOver ? null :() {
-                        ref
-                            .read(matchProvider.notifier)
-                            .addBall(Ball(run: 0, type: BallType.wide));
-                      },
-                      child: Text('Wide'),
-                    ),
-                    ElevatedButton(
-                      onPressed:totalscore.isInningOver ? null : () {
-                        ref
-                            .read(matchProvider.notifier)
-                            .addBall(Ball(run: 0, type: BallType.noBall));
-                      },
-                      child: Text('no Ball'),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed:totalscore.isInningOver ? null : () {
-                    ref
-                        .read(matchProvider.notifier)
-                        .addBall(Ball(run: 0, type: BallType.wicket));
-                  },
-                  child: Text('Wickett!'),
-                ),
-              ],
-            ),
-          ],
+              SizedBox(height: 5),
+              Text(
+                batters[nonStrikerIdx],
+                style: TextStyle(color: Color(0xff918A80), fontSize: 18),
+              ),
+              SizedBox(height: 20),
+              Text(
+                '${score.totalRuns}/${score.wickets}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+              ),
+              SizedBox(height: 7,),
+              Text(score.overs, style: TextStyle(color: Color(0xff918A80))),
+            ],
+          ),
         ),
       ),
     );

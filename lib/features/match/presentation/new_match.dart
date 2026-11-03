@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorekar/features/match/presentation/score_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 class NewMatch extends StatefulWidget {
@@ -10,6 +11,8 @@ class NewMatch extends StatefulWidget {
 
 class _NewMatchState extends State<NewMatch> {
   int selectedOvers = 5;
+  final teamA = TextEditingController();
+  final teamB = TextEditingController();
   Future<void> pickCustomOvers() async {
     final controller = TextEditingController();
     final result = await showDialog<int>(
@@ -44,6 +47,13 @@ class _NewMatchState extends State<NewMatch> {
   }
 
   @override
+  void dispose() {
+    teamA.dispose();
+    teamB.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isCustom = ![5, 10, 20].contains(selectedOvers);
     return Scaffold(
@@ -64,6 +74,7 @@ class _NewMatchState extends State<NewMatch> {
             ),
             SizedBox(height: 5),
             TextField(
+              controller: teamA,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColors.card,
@@ -82,6 +93,7 @@ class _NewMatchState extends State<NewMatch> {
             ),
             SizedBox(height: 5),
             TextField(
+              controller: teamB,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColors.card,
@@ -127,7 +139,15 @@ class _NewMatchState extends State<NewMatch> {
                     borderRadius: BorderRadiusGeometry.circular(12),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          ScorePage(a: teamA.text.trim(), b: teamB.text.trim()),
+                    ),
+                  );
+                },
                 child: Text(
                   'Start Match',
                   style: TextStyle(
