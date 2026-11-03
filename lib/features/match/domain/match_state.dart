@@ -2,8 +2,9 @@ import 'ball.dart';
 
 class MatchState {
   final List<Ball> balls;
+  final int maxOvers;
 
-  MatchState.fromBalls(this.balls);
+  MatchState.fromBalls(this.balls,{this.maxOvers=5});
   MatchState undo() {
     if (balls.isEmpty) return this;
     return MatchState.fromBalls(balls.sublist(0, balls.length - 1));
@@ -41,5 +42,5 @@ class MatchState {
     return striker;
   }
 
-  bool get isInningOver => legalBalls >= 30;
+  bool get isInningOver => legalBalls >= maxOvers*6;
 }

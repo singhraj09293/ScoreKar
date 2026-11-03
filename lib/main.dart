@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scorekar/features/match/presentation/score_page.dart';
+import 'package:scorekar/features/match/presentation/new_match.dart';
+import 'package:scorekar/theme/app_colors.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -13,7 +14,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: AppColors.background,
+        cardTheme: CardThemeData(color: AppColors.card),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+        ),
+        colorScheme: const ColorScheme.dark(primary: AppColors.accent),
+      ),
       debugShowCheckedModeBanner: false,
-      home: ScorePage(),);
+      home: NewMatch(),
+    );
   }
 }

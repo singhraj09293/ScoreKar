@@ -55,4 +55,10 @@ void main() {
     final state = MatchState.fromBalls(balls);
     expect(state.isInningOver, true);
   });
+  test('maxover', () {
+    final balls = List.generate(36, (_) => Ball(run: 0));
+    int maxOvers=6;
+    final state = MatchState.fromBalls(balls,maxOvers:maxOvers);
+    expect(state.isInningOver, true);
+  });
 }
