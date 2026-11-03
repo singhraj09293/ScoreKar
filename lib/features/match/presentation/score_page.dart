@@ -17,7 +17,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
     List<int> runs = [0, 1, 2, 4, 6];
     return Scaffold(
       body: Center(
-        child: Column(
+        child:totalscore.isInningOver ? Text('Inning Over'): Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -40,14 +40,14 @@ class _ScorePageState extends ConsumerState<ScorePage> {
               children: [
                 ...runs.map(
                   (n) => ElevatedButton(
-                    onPressed: () =>
+                    onPressed: totalscore.isInningOver ? null :  () =>
                         ref.read(matchProvider.notifier).addBall(Ball(run: n)),
                     child: Text('$n'),
                   ),
                 ),
                 SizedBox(height: 5),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed:totalscore.isInningOver ? null : () {
                     ref.read(matchProvider.notifier).undo();
                   },
                   child: Text('Undo'),
@@ -56,7 +56,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: totalscore.isInningOver ? null :() {
                         ref
                             .read(matchProvider.notifier)
                             .addBall(Ball(run: 0, type: BallType.wide));
@@ -64,7 +64,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                       child: Text('Wide'),
                     ),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed:totalscore.isInningOver ? null : () {
                         ref
                             .read(matchProvider.notifier)
                             .addBall(Ball(run: 0, type: BallType.noBall));
@@ -74,7 +74,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed:totalscore.isInningOver ? null : () {
                     ref
                         .read(matchProvider.notifier)
                         .addBall(Ball(run: 0, type: BallType.wicket));
