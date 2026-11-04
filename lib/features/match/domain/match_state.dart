@@ -63,4 +63,26 @@ class MatchState {
     }
     return runs[batter];
   }
+
+  int ballFacedBy(int batter) {
+    int striker = 0;
+    List<int> faced = [0, 0];
+    int legalCount = 0;
+
+    for (final ball in balls) {
+      if (ball.type != BallType.wide) {
+        faced[striker] += 1;
+      }
+      if (ball.run % 2 == 1) {
+        striker = 1 - striker;
+      }
+      if (ball.isLegal) {
+        legalCount++;
+        if (legalCount % 6 == 0) {
+          striker = 1 - striker;
+        }
+      }
+    }
+    return faced[batter];
+  }
 }

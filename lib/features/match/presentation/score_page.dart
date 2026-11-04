@@ -60,14 +60,36 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 ),
               ),
               SizedBox(height: 5),
-              Text(
-                '${batters[strikerIdx]}*',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.sports_cricket, color: AppColors.accent),
+                  SizedBox(width: 5),
+                  Text(
+                    '${batters[strikerIdx]} *',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    '${score.runOf(strikerIdx)} (${score.ballFacedBy(strikerIdx)})',
+                    style: TextStyle(color: Color(0xff918A80), fontSize: 18),
+                  ),
+                ],
               ),
               SizedBox(height: 5),
-              Text(
-                batters[nonStrikerIdx],
-                style: TextStyle(color: Color(0xff918A80), fontSize: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    batters[nonStrikerIdx],
+                    style: TextStyle(color: Color(0xff918A80), fontSize: 18),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    '${score.runOf(nonStrikerIdx)} (${score.ballFacedBy(nonStrikerIdx)})',
+                    style: TextStyle(color: Color(0xff918A80), fontSize: 18),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
               Text(

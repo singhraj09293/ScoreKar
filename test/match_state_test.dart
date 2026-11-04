@@ -69,4 +69,13 @@ void main() {
     ]);
     expect(state.runOf(0), 1);
   });
+  test('ball faced by per striker', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 1),
+      Ball(run: 1),
+      Ball(run: 2),
+    ]);
+    expect(state.ballFacedBy(0),2);
+  });
+
 }
