@@ -57,8 +57,16 @@ void main() {
   });
   test('maxover', () {
     final balls = List.generate(36, (_) => Ball(run: 0));
-    int maxOvers=6;
-    final state = MatchState.fromBalls(balls,maxOvers:maxOvers);
+    int maxOvers = 6;
+    final state = MatchState.fromBalls(balls, maxOvers: maxOvers);
     expect(state.isInningOver, true);
+  });
+  test('runs per striker', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 1),
+      Ball(run: 0),
+      Ball(run: 2),
+    ]);
+    expect(state.runOf(0), 1);
   });
 }
