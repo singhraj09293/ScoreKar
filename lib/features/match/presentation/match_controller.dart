@@ -25,11 +25,11 @@ final matchProvider = NotifierProvider<MatchController, MatchState>(
 class MatchInfoController extends Notifier<MatchInfo> {
   @override
   MatchInfo build() {
-    return MatchInfo(teamA: 'Team A', teamB: 'Team B');
+    return MatchInfo(teamA: 'Team A', teamB: 'Team B',teamAPlayers: [],teamBPlayers: []);
   }
 
   void setTeam(String a, String b) {
-    state = MatchInfo(teamA: a, teamB: b);
+    state = MatchInfo(teamA: a, teamB: b, teamAPlayers: [], teamBPlayers: []);
   }
 }
 

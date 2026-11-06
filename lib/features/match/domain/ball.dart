@@ -1,5 +1,7 @@
 enum BallType { noBall, normal, wide, wicket }
 
+
+
 class Ball {
   final int run;
   final BallType type;

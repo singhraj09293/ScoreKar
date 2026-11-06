@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scorekar/features/match/presentation/score_page.dart';
+import 'package:scorekar/features/match/presentation/toss_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 class NewMatch extends StatefulWidget {
@@ -142,10 +143,7 @@ class _NewMatchState extends State<NewMatch> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          ScorePage(a: teamA.text.trim(), b: teamB.text.trim()),
-                    ),
+                    MaterialPageRoute(builder: (_) => TossPage()),
                   );
                 },
                 child: Text(
