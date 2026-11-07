@@ -33,7 +33,11 @@ class _ScorePageState extends ConsumerState<ScorePage> {
 
   @override
   Widget build(BuildContext context) {
-    final batters = ['Ravi', 'Amit'];
+    final battersA = ref.watch(matchinfoProvider).teamAPlayers;
+    final battersB = ref.watch(matchinfoProvider).teamBPlayers;
+    final info = ref.watch(matchinfoProvider);
+    final batter = info.battingFirst == 0 ? battersA : battersB;
+     final tossWinnerName = info.tossWinner == 0 ? info.teamA : info.teamB;
     final score = ref.watch(matchProvider);
     final strikerIdx = score.strikerIndex;
     final nonStrikerIdx = 1 - score.strikerIndex;
@@ -52,7 +56,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                widget.a,
+                (tossWinnerName),
                 style: TextStyle(
                   fontSize: 18,
                   color: Color(0xff918A80),
@@ -66,7 +70,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   Icon(Icons.sports_cricket, color: AppColors.accent),
                   SizedBox(width: 5),
                   Text(
-                    '${batters[strikerIdx]} *',
+                    '${batter[strikerIdx]} *',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                   ),
                   SizedBox(width: 10),
@@ -81,7 +85,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    batters[nonStrikerIdx],
+                    batter[nonStrikerIdx],
                     style: TextStyle(color: Color(0xff918A80), fontSize: 18),
                   ),
                   SizedBox(width: 10),

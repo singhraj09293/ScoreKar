@@ -51,6 +51,32 @@ class MatchState {
     }
     return striker;
   }
+int get nonStrikerIndex {
+    int striker = 0;
+    int nonStriker = 1;
+    int next = 2;
+    int legalCount = 0;
+    for (final ball in balls) {
+      if (ball.run % 2 != 0) {
+        final temp = striker;
+        striker = nonStriker;
+        nonStriker = temp;
+      }
+      if (ball.type != BallType.wide && ball.type != BallType.noBall) {
+        legalCount = legalCount + 1;
+        if (legalCount % 6 == 0) {
+          final temp = striker;
+          striker = nonStriker;
+          nonStriker = temp;
+        }
+      }
+      if (ball.type == BallType.wicket) {
+        striker = next;
+        next++;
+      }
+    }
+    return nonStriker;
+  }
 
   bool get isInningOver => legalBalls >= maxOvers * 6;
 

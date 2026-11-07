@@ -119,4 +119,12 @@ void main() {
     ]);
     expect(state.strikerIndex, 1);
   });
+   test('batting order', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 4),
+      Ball(run: 0,),
+      Ball(run: 6),
+    ]);
+    expect(state.nonStrikerIndex,1);
+  });
 }
