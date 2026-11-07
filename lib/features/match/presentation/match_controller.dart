@@ -40,6 +40,13 @@ class MatchInfoController extends Notifier<MatchInfo> {
   void setToss(int winner, TossChoice choice) {
     state = state.copyWith(tossWinner: winner, tossChoice: choice);
   }
+
+  void setPlayer(List<String> teamAPlayer, List<String> teamBPlayer) {
+    state = state.copyWith(
+      teamAPlayers: teamAPlayer,
+      teamBPlayers: teamBPlayer,
+    );
+  }
 }
 
 final matchinfoProvider = NotifierProvider<MatchInfoController, MatchInfo>(
