@@ -46,7 +46,7 @@ class MatchState {
 
   int runOf(int batter) {
     int striker = 0;
-    int nonStiker = 1;
+    int nonStriker = 1;
     int next = 2;
     List<int> runs = List<int>.filled(11, 0);
     int legalCount = 0;
@@ -55,13 +55,13 @@ class MatchState {
       runs[striker] += ball.run;
       if (ball.run % 2 == 1) {
         final temp = striker;
-        striker = nonStiker;
-        nonStiker = temp;
+        striker = nonStriker;
+        nonStriker = temp;
       }
       if (ball.isLegal) {
         legalCount++;
         if (legalCount % 6 == 0) {
-          striker = nonStiker;
+          striker = nonStriker;
         }
       }
       if (ball.type == BallType.wicket) {
@@ -74,7 +74,10 @@ class MatchState {
 
   int ballFacedBy(int batter) {
     int striker = 0;
-    List<int> faced = [0, 0];
+    int nonStriker = 1;
+    int next = 2;
+
+    List<int> faced = List.filled(11, 0);
     int legalCount = 0;
 
     for (final ball in balls) {
@@ -82,13 +85,21 @@ class MatchState {
         faced[striker] += 1;
       }
       if (ball.run % 2 == 1) {
-        striker = 1 - striker;
+        final temp = striker;
+        striker = nonStriker;
+        nonStriker = temp;
       }
       if (ball.isLegal) {
         legalCount++;
         if (legalCount % 6 == 0) {
-          striker = 1 - striker;
+          final temp = striker;
+          striker = nonStriker;
+          nonStriker = temp;
         }
+      }
+      if (ball.type == BallType.wicket) {
+        striker = next;
+        next++;
       }
     }
     return faced[batter];
