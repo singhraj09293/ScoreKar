@@ -27,16 +27,26 @@ class MatchState {
   String get overs => '${legalBalls ~/ 6}.${legalBalls % 6}';
   int get strikerIndex {
     int striker = 0;
+    int nonStriker = 1;
+    int next = 2;
     int legalCount = 0;
     for (final ball in balls) {
       if (ball.run % 2 != 0) {
-        striker = 1 - striker;
+        final temp = striker;
+        striker = nonStriker;
+        nonStriker = temp;
       }
       if (ball.type != BallType.wide && ball.type != BallType.noBall) {
         legalCount = legalCount + 1;
         if (legalCount % 6 == 0) {
-          striker = 1 - striker;
+          final temp = striker;
+          striker = nonStriker;
+          nonStriker = temp;
         }
+      }
+      if (ball.type == BallType.wicket) {
+        striker = next;
+        next++;
       }
     }
     return striker;
