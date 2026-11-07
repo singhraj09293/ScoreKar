@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/presentation/match_controller.dart';
+import 'package:scorekar/features/match/presentation/score_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 class PlayerSelection extends ConsumerStatefulWidget {
@@ -104,6 +105,7 @@ class _PlayerSelectionState extends ConsumerState<PlayerSelection> {
                   ref
                       .read(matchinfoProvider.notifier)
                       .setPlayer(teamAPlayers, teamBPlayers);
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=>ScorePage(a: , b: b)))
                 }
               },
               child: Text(

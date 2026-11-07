@@ -75,7 +75,30 @@ void main() {
       Ball(run: 1),
       Ball(run: 2),
     ]);
-    expect(state.ballFacedBy(0),2);
+    expect(state.ballFacedBy(0), 2);
   });
-
+  test('batting order', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 4),
+      Ball(run: 0, type: BallType.wicket),
+      Ball(run: 6),
+    ]);
+    expect(state.runOf(0), 4);
+  });
+  test('batting order', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 4),
+      Ball(run: 0, type: BallType.wicket),
+      Ball(run: 6),
+    ]);
+    expect(state.runOf(1), 0);
+  });
+  test('batting order', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 4),
+      Ball(run: 0, type: BallType.wicket),
+      Ball(run: 6),
+    ]);
+    expect(state.runOf(2), 6);
+  });
 }
