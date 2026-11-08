@@ -128,9 +128,14 @@ void main() {
     ]);
     expect(state.nonStrikerIndex, 1);
   });
-   test('maxwicket', () {
-    final balls = List.generate(3, (_) => Ball(run: 0,type: BallType.wicket));
+  test('maxwicket', () {
+    final balls = List.generate(3, (_) => Ball(run: 0, type: BallType.wicket));
     final state = MatchState.fromBalls(balls, maxWicket: 2);
     expect(state.isAllOut, true);
+  });
+  test('all out before the overs finish, so isInningsOver is true', () {
+    final balls = List.generate(5, (_) => Ball(run: 0,));
+    final state = MatchState.fromBalls(balls);
+    expect(state.isInningOver ,  false);
   });
 }

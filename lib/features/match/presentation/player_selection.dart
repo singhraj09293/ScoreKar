@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scorekar/features/match/presentation/match_controller.dart';
+import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/score_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
@@ -20,7 +20,6 @@ class _PlayerSelectionState extends ConsumerState<PlayerSelection> {
     final teamA = ref.read(matchinfoProvider).teamA;
     final teamB = ref.read(matchinfoProvider).teamB;
     final ready = teamAPlayers.length >= 2 && teamBPlayers.length >= 2;
-   
 
     return Scaffold(
       appBar: AppBar(title: Text('Players')),
@@ -107,7 +106,15 @@ class _PlayerSelectionState extends ConsumerState<PlayerSelection> {
                   ref
                       .read(matchinfoProvider.notifier)
                       .setPlayer(teamAPlayers, teamBPlayers);
-                  Navigator.push(context, MaterialPageRoute(builder: (_)=>ScorePage(a: teamA, b: teamB)));
+                  ref
+                      .read(matchProvider.notifier)
+                      .startMatch(ref.read(matchinfoProvider).overs);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ScorePage(a: teamA, b: teamB),
+                    ),
+                  );
                 }
               },
               child: Text(

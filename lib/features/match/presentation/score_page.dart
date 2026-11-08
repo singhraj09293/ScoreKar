@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/domain/match_info.dart';
-import 'package:scorekar/features/match/presentation/match_controller.dart';
+import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/theme/app_colors.dart';
 import 'dart:math';
 

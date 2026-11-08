@@ -80,7 +80,7 @@ class MatchState {
     return nonStriker;
   }
 
-  bool get isInningOver => legalBalls >= maxOvers * 6;
+  bool get isInningOver => legalBalls >= maxOvers * 6 || isAllOut;
 
   bool get isAllOut => wickets >= maxWicket;
 

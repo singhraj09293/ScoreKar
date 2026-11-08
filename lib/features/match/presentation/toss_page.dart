@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scorekar/features/match/domain/match_info.dart';
 import 'package:scorekar/features/match/presentation/coin_flip.dart';
-import 'package:scorekar/features/match/presentation/match_controller.dart';
+import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/player_selection.dart';
 import 'package:scorekar/theme/app_colors.dart';
 

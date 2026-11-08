@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scorekar/features/match/domain/match_info.dart';
+import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/score_page.dart';
 import 'package:scorekar/features/match/presentation/toss_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
-class NewMatch extends StatefulWidget {
+class NewMatch extends ConsumerStatefulWidget {
   const NewMatch({super.key});
 
   @override
-  State<NewMatch> createState() => _NewMatchState();
+  ConsumerState<NewMatch> createState() => _NewMatchState();
 }
 
-class _NewMatchState extends State<NewMatch> {
+class _NewMatchState extends ConsumerState<NewMatch> {
   int selectedOvers = 5;
   final teamA = TextEditingController();
   final teamB = TextEditingController();
@@ -141,6 +144,14 @@ class _NewMatchState extends State<NewMatch> {
                   ),
                 ),
                 onPressed: () {
+                  ref
+                      .read(matchinfoProvider.notifier)
+                      .setTeam(
+                        teamA.text.trim(),
+                        teamB.text.trim(),
+                        selectedOvers,
+                      );
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => TossPage()),

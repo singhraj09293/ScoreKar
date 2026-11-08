@@ -9,6 +9,15 @@ class MatchController extends Notifier<MatchState> {
     return MatchState.fromBalls([]);
   }
 
+  void startMatch(int overs) {
+    final info = ref.read(matchinfoProvider);
+    final batting = info.battingFirst == 0
+        ? info.teamAPlayers
+        : info.teamAPlayers;
+    final limit = batting.length - 1;
+    state = MatchState.fromBalls([], maxOvers: overs, maxWicket: limit);
+  }
+
   void addBall(Ball ball) {
     state = MatchState.fromBalls([...state.balls, ball]);
   }
@@ -33,8 +42,14 @@ class MatchInfoController extends Notifier<MatchInfo> {
     );
   }
 
-  void setTeam(String a, String b) {
-    state = MatchInfo(teamA: a, teamB: b, teamAPlayers: [], teamBPlayers: []);
+  void setTeam(String a, String b, int over) {
+    state = MatchInfo(
+      teamA: a,
+      teamB: b,
+      teamAPlayers: [],
+      teamBPlayers: [],
+      overs: over,
+    );
   }
 
   void setToss(int winner, TossChoice choice) {

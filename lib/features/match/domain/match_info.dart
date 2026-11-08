@@ -8,6 +8,7 @@ class MatchInfo {
   final List<String> teamBPlayers;
   final int tossWinner; //0 or 1
   final TossChoice tossChoice;
+  final int overs;
 
   const MatchInfo({
     required this.teamA,
@@ -16,6 +17,7 @@ class MatchInfo {
     required this.teamBPlayers,
     this.tossWinner = 0,
     this.tossChoice = TossChoice.bats,
+    this.overs = 5,
   });
 
   MatchInfo copyWith({
@@ -25,6 +27,7 @@ class MatchInfo {
     List<String>? teamBPlayers,
     int? tossWinner,
     TossChoice? tossChoice,
+    int? overs,
   }) {
     return MatchInfo(
       teamA: teamA ?? this.teamA,
@@ -33,11 +36,10 @@ class MatchInfo {
       teamBPlayers: teamBPlayers ?? this.teamBPlayers,
       tossWinner: tossWinner ?? this.tossWinner,
       tossChoice: tossChoice ?? this.tossChoice,
+      overs: overs ?? this.overs,
     );
   }
 
   int get battingFirst =>
       tossChoice == TossChoice.bats ? tossWinner : 1 - tossWinner;
-
- 
 }
