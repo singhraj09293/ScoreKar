@@ -3,8 +3,9 @@ import 'ball.dart';
 class MatchState {
   final List<Ball> balls;
   final int maxOvers;
+  final int maxWicket;
 
-  MatchState.fromBalls(this.balls, {this.maxOvers = 5});
+  MatchState.fromBalls(this.balls, {this.maxOvers = 5, this.maxWicket = 10});
   MatchState undo() {
     if (balls.isEmpty) return this;
     return MatchState.fromBalls(balls.sublist(0, balls.length - 1));
@@ -51,7 +52,8 @@ class MatchState {
     }
     return striker;
   }
-int get nonStrikerIndex {
+
+  int get nonStrikerIndex {
     int striker = 0;
     int nonStriker = 1;
     int next = 2;
@@ -79,6 +81,8 @@ int get nonStrikerIndex {
   }
 
   bool get isInningOver => legalBalls >= maxOvers * 6;
+
+  bool get isAllOut => wickets >= maxWicket;
 
   int runOf(int batter) {
     int striker = 0;

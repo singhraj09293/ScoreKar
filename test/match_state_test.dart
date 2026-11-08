@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/domain/match_state.dart';
@@ -114,17 +115,22 @@ void main() {
   test('batting order', () {
     final state = MatchState.fromBalls([
       Ball(run: 4),
-      Ball(run: 1,),
+      Ball(run: 1),
       Ball(run: 6),
     ]);
     expect(state.strikerIndex, 1);
   });
-   test('batting order', () {
+  test('batting order', () {
     final state = MatchState.fromBalls([
       Ball(run: 4),
-      Ball(run: 0,),
+      Ball(run: 0),
       Ball(run: 6),
     ]);
-    expect(state.nonStrikerIndex,1);
+    expect(state.nonStrikerIndex, 1);
+  });
+   test('maxwicket', () {
+    final balls = List.generate(3, (_) => Ball(run: 0,type: BallType.wicket));
+    final state = MatchState.fromBalls(balls, maxWicket: 2);
+    expect(state.isAllOut, true);
   });
 }
