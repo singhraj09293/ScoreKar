@@ -81,6 +81,7 @@ class _CoinFlipDialogState extends State<_CoinFlipDialog>
   @override
   Widget build(BuildContext context) {
     // PopScope prevents Android back-button dismissals while the coin is flipping
+    String _initial(String name) => name.isEmpty ? '?' : name[0];
     return PopScope(
       canPop: false,
       child: Dialog(
@@ -102,7 +103,7 @@ class _CoinFlipDialogState extends State<_CoinFlipDialog>
                   // Render the front or back letter. The back text is flipped by pi around X so it isn't upside down.
                   final faceWidget = isFrontVisible
                       ? Text(
-                          widget.teamA[0],
+                          _initial(widget.teamA),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 64,
@@ -113,7 +114,7 @@ class _CoinFlipDialogState extends State<_CoinFlipDialog>
                           alignment: Alignment.center,
                           transform: Matrix4.identity()..rotateX(pi),
                           child: Text(
-                            widget.teamB[0],
+                            _initial(widget.teamB),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 64,

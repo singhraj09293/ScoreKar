@@ -134,8 +134,14 @@ void main() {
     expect(state.isAllOut, true);
   });
   test('all out before the overs finish, so isInningsOver is true', () {
-    final balls = List.generate(5, (_) => Ball(run: 0,));
+    final balls = List.generate(5, (_) => Ball(run: 0));
     final state = MatchState.fromBalls(balls);
-    expect(state.isInningOver ,  false);
+    expect(state.isInningOver, false);
+  });
+  test('ball in current inning', () {
+    final balls = List.generate(4, (_) => Ball(run: 0));
+    final state = MatchState.fromBalls(balls);
+    expect(state.ballInCurrentOver, 4);
+    expect(state.ballsRemainingInOver, 2);
   });
 }

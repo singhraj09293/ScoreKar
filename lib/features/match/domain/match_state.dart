@@ -82,6 +82,9 @@ class MatchState {
 
   bool get isInningOver => legalBalls >= maxOvers * 6 || isAllOut;
 
+  int get ballInCurrentOver => legalBalls % 6;
+  int get ballsRemainingInOver => 6 - ballInCurrentOver;
+
   bool get isAllOut => wickets >= maxWicket;
 
   int runOf(int batter) {
