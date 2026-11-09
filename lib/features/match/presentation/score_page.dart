@@ -34,16 +34,30 @@ class _ScorePageState extends ConsumerState<ScorePage> {
 
   @override
   Widget build(BuildContext context) {
-    final battersA = ref.watch(matchinfoProvider).teamAPlayers;
-    final battersB = ref.watch(matchinfoProvider).teamBPlayers;
     final info = ref.watch(matchinfoProvider);
+    final battersA = info.teamAPlayers;
+    final battersB = info.teamBPlayers;
     final batter = info.battingFirst == 0 ? battersA : battersB;
-     final tossWinnerName = info.tossWinner == 0 ? info.teamA : info.teamB;
-     final choiceWord = info.tossChoice == TossChoice.bats ? 'bat' : 'bowl';
+    final tossWinnerName = info.tossWinner == 0 ? info.teamA : info.teamB;
+    final choiceWord = info.tossChoice == TossChoice.bats ? 'bat' : 'bowl';
     final score = ref.watch(matchProvider);
+    final ballInOver = score.ballInCurrentOver;
     final strikerIdx = score.strikerIndex;
     final nonStrikerIdx = score.nonStrikerIndex;
     final sublabels = {0: 'DOT', 1: 'SINGLE', 2: 'DOUBLE', 4: 'FOUR', 6: 'SIX'};
+    String _ballLabel(Ball ball) {
+      switch (ball.type) {
+        case BallType.wicket:
+          return 'W';
+        case BallType.wide:
+          return 'wd';
+        case BallType.noBall:
+          return 'nb';
+        case BallType.normal:
+          return '${ball.run}';
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,14 +66,14 @@ class _ScorePageState extends ConsumerState<ScorePage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  ('$tossWinnerName has won the toss and chose $choiceWord First'),
+                  ('$tossWinnerName has won the toss and chose to $choiceWord First'),
                   style: TextStyle(
                     fontSize: 15,
                     color: Color(0xff918A80),
@@ -68,28 +82,33 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  tossWinnerName,
+                  info.battingFirst == 0 ? info.teamA : info.teamB,
                   style: TextStyle(
                     fontSize: 18,
                     color: Color(0xff918A80),
                     letterSpacing: 2,
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.sports_cricket, color: AppColors.accent),
                     SizedBox(width: 5),
                     Text(
-                      strikerIdx <batter.length ?
-                      '${batter[strikerIdx]} *' : 'All Out',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                      strikerIdx < batter.length
+                          ? '${batter[strikerIdx]} *'
+                          : 'All Out',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23,
+                      ),
                     ),
                     SizedBox(width: 10),
                     Text(
-                      strikerIdx <batter.length ?
-                      '${score.runOf(strikerIdx)} (${score.ballFacedBy(strikerIdx)})' : '',
+                      nonStrikerIdx < batter.length
+                          ? '${score.runOf(strikerIdx)} (${score.ballFacedBy(strikerIdx)})'
+                          : '',
                       style: TextStyle(color: Color(0xff918A80), fontSize: 18),
                     ),
                   ],
@@ -99,14 +118,16 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      nonStrikerIdx < batter.length ?
-                      batter[nonStrikerIdx] : '-',
+                      nonStrikerIdx < batter.length
+                          ? batter[nonStrikerIdx]
+                          : '-',
                       style: TextStyle(color: Color(0xff918A80), fontSize: 18),
                     ),
                     SizedBox(width: 10),
                     Text(
-                      strikerIdx <batter.length ?
-                      '${score.runOf(nonStrikerIdx)} (${score.ballFacedBy(nonStrikerIdx)})':'',
+                      strikerIdx < batter.length
+                          ? '${score.runOf(nonStrikerIdx)} (${score.ballFacedBy(nonStrikerIdx)})'
+                          : '',
                       style: TextStyle(color: Color(0xff918A80), fontSize: 18),
                     ),
                   ],
@@ -116,9 +137,57 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   '${score.totalRuns}/${score.wickets}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                 ),
-                SizedBox(height: 7),
-                Text(score.overs, style: TextStyle(color: Color(0xff918A80))),
-                SizedBox(height: 40),
+                SizedBox(height: 10),
+                Text(
+                  score.overs,
+                  style: TextStyle(color: Color(0xff918A80), fontSize: 20),
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: 300,
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      ...List.generate(6, (i) {
+                        return Expanded(
+                          child: Container(
+                            height: 4,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: i < ballInOver
+                                  ? AppColors.accent
+                                  : AppColors.card,
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: 300,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'BALL ${score.ballInCurrentOver} OF 6',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      Text(
+                        '${score.ballsRemainingInOver} REMAINIG',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   alignment: Alignment.center,
@@ -136,7 +205,6 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                             (b) => Container(
                               width: 40,
                               height: 40,
-            
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -145,7 +213,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                                     : _runColor(b),
                               ),
                               child: Text(
-                                '${b.run}',
+                                _ballLabel(b),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -164,11 +232,15 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                       (r) => Expanded(
                         child: _runsContainer(
                           label: '$r',
-                          color: AppColors.card,
+                          color: score.isInningOver
+                              ? Colors.grey
+                              : AppColors.card,
                           onTap: () {
-                            ref
-                                .read(matchProvider.notifier)
-                                .addBall(Ball(run: r));
+                            score.isInningOver
+                                ? null
+                                : ref
+                                      .read(matchProvider.notifier)
+                                      .addBall(Ball(run: r));
                           },
                           sublabel: sublabels[r],
                         ),
@@ -184,11 +256,15 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                       (r) => Expanded(
                         child: _runsContainer(
                           label: '$r',
-                          color: r == 4 ? AppColors.blue : AppColors.accent,
+                          color: score.isInningOver
+                              ? Colors.grey
+                              : (r == 4 ? AppColors.blue : AppColors.accent),
                           onTap: () {
-                            ref
-                                .read(matchProvider.notifier)
-                                .addBall(Ball(run: r));
+                            score.isInningOver
+                                ? null
+                                : ref
+                                      .read(matchProvider.notifier)
+                                      .addBall(Ball(run: r));
                           },
                           sublabel: sublabels[r],
                         ),
@@ -203,22 +279,32 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     Expanded(
                       child: _runsContainer(
                         label: 'WIDE',
-                        color: AppColors.card,
+                        color: score.isInningOver
+                            ? Colors.grey
+                            : AppColors.card,
                         onTap: () {
-                          ref
-                              .read(matchProvider.notifier)
-                              .addBall(Ball(run: 0, type: BallType.wide));
+                          score.isInningOver
+                              ? null
+                              : ref
+                                    .read(matchProvider.notifier)
+                                    .addBall(Ball(run: 0, type: BallType.wide));
                         },
                       ),
                     ),
                     Expanded(
                       child: _runsContainer(
                         label: 'NO BALL',
-                        color: AppColors.card,
+                        color: score.isInningOver
+                            ? Colors.grey
+                            : AppColors.card,
                         onTap: () {
-                          ref
-                              .read(matchProvider.notifier)
-                              .addBall(Ball(run: 0, type: BallType.noBall));
+                          score.isInningOver
+                              ? null
+                              : ref
+                                    .read(matchProvider.notifier)
+                                    .addBall(
+                                      Ball(run: 0, type: BallType.noBall),
+                                    );
                         },
                       ),
                     ),
@@ -227,16 +313,20 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 SizedBox(height: 10),
                 _runsContainer(
                   label: 'WICKET',
-                  color: Color(0XFFDC2626),
+                  color: score.isInningOver ? Colors.grey : Color(0XFFDC2626),
                   onTap: () {
-                    ref
-                        .read(matchProvider.notifier)
-                        .addBall(Ball(run: 0, type: BallType.wicket));
+                    score.isInningOver
+                        ? null
+                        : ref
+                              .read(matchProvider.notifier)
+                              .addBall(Ball(run: 0, type: BallType.wicket));
                   },
                 ),
                 SizedBox(height: 10),
                 GestureDetector(
-                  onTap: () => ref.read(matchProvider.notifier).undo(),
+                  onTap: () {
+                    ref.read(matchProvider.notifier).undo();
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
