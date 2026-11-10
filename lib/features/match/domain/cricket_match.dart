@@ -54,4 +54,15 @@ class CricketMatch {
       return CricketMatch(info: info, innings1: innings1, innings2: newInning2);
     }
   }
+
+  CricketMatch startSecondInning() {
+    final secondInning = MatchState.fromBalls(
+      [],
+      maxOvers: info.overs,
+      maxWicket: info.battingFirst == 1
+          ? info.teamBPlayers.length - 1
+          : info.teamAPlayers.length - 1,
+    );
+    return CricketMatch(info: info, innings1: innings1, innings2: secondInning);
+  }
 }

@@ -1,33 +1,44 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
+import 'package:scorekar/features/match/domain/cricket_match.dart';
 import 'package:scorekar/features/match/domain/match_info.dart';
 import 'package:scorekar/features/match/domain/match_state.dart';
 
-class MatchController extends Notifier<MatchState> {
+class MatchController extends Notifier<CricketMatch> {
   @override
-  MatchState build() {
-    return MatchState.fromBalls([]);
+  CricketMatch build() {
+    return CricketMatch(
+      info: ref.read(matchinfoProvider),
+      innings1: MatchState.fromBalls([]),
+    );
   }
 
-  void startMatch(int overs) {
+  void startMatch() {
     final info = ref.read(matchinfoProvider);
     final batting = info.battingFirst == 0
         ? info.teamAPlayers
-        : info.teamAPlayers;
+        : info.teamBPlayers;
     final limit = batting.length - 1;
-    state = MatchState.fromBalls([], maxOvers: overs, maxWicket: limit);
+    state = CricketMatch(
+      info: info,
+      innings1: MatchState.fromBalls(
+        [],
+        maxOvers: info.overs,
+        maxWicket: limit,
+      ),
+    );
   }
 
   void addBall(Ball ball) {
-    state = MatchState.fromBalls([...state.balls, ball]);
+    state = state.withBall(ball);
   }
 
   void undo() {
-    state = state.undo();
+    state = state.withUndo();
   }
 }
 
-final matchProvider = NotifierProvider<MatchController, MatchState>(
+final matchProvider = NotifierProvider<MatchController, CricketMatch>(
   MatchController.new,
 );
 

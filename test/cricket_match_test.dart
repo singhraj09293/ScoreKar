@@ -63,9 +63,9 @@ void main() {
     final inning1 = MatchState.fromBalls([Ball(run: 4)]);
     final match = CricketMatch(info: info, innings1: inning1);
     final after = match.withUndo();
-    expect(after.innings1.balls.length,0);
+    expect(after.innings1.balls.length, 0);
   });
-   test('undo removes with 2 inning without changing 1st inning', () {
+  test('undo removes with 2 inning without changing 1st inning', () {
     final info = MatchInfo(
       teamA: 'tiger',
       teamB: 'Lion',
@@ -74,9 +74,14 @@ void main() {
       overs: 5,
     );
     final inning1 = MatchState.fromBalls([Ball(run: 4)]);
-     final inning2 = MatchState.fromBalls([Ball(run: 2),Ball(run: 4)]);
-    final match = CricketMatch(info: info, innings1: inning1,innings2: inning2);
+    final inning2 = MatchState.fromBalls([Ball(run: 2), Ball(run: 4)]);
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
     final after = match.withUndo();
-    expect(after.innings2!.balls.length,1);
+    expect(after.innings2!.balls.length, 1);
   });
+  
 }
