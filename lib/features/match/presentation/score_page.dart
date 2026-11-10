@@ -244,11 +244,11 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                       (r) => Expanded(
                         child: _runsContainer(
                           label: '$r',
-                          color: score.isInningOver
+                          color: match.isInningOver
                               ? Colors.grey
                               : AppColors.card,
                           onTap: () {
-                            score.isInningOver
+                            match.isInningOver
                                 ? null
                                 : ref
                                       .read(matchProvider.notifier)
@@ -268,11 +268,11 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                       (r) => Expanded(
                         child: _runsContainer(
                           label: '$r',
-                          color: score.isInningOver
+                          color: match.isInningOver
                               ? Colors.grey
                               : (r == 4 ? AppColors.blue : AppColors.accent),
                           onTap: () {
-                            score.isInningOver
+                            match.isInningOver
                                 ? null
                                 : ref
                                       .read(matchProvider.notifier)
@@ -291,11 +291,11 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     Expanded(
                       child: _runsContainer(
                         label: 'WIDE',
-                        color: score.isInningOver
+                        color: match.isInningOver
                             ? Colors.grey
                             : AppColors.card,
                         onTap: () {
-                          score.isInningOver
+                          match.isInningOver
                               ? null
                               : ref
                                     .read(matchProvider.notifier)
@@ -306,11 +306,11 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     Expanded(
                       child: _runsContainer(
                         label: 'NO BALL',
-                        color: score.isInningOver
+                        color: match.isInningOver
                             ? Colors.grey
                             : AppColors.card,
                         onTap: () {
-                          score.isInningOver
+                          match.isInningOver
                               ? null
                               : ref
                                     .read(matchProvider.notifier)
@@ -325,9 +325,9 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 SizedBox(height: 10),
                 _runsContainer(
                   label: 'WICKET',
-                  color: score.isInningOver ? Colors.grey : Color(0XFFDC2626),
+                  color: match.isInningOver ? Colors.grey : Color(0XFFDC2626),
                   onTap: () {
-                    score.isInningOver
+                    match.isInningOver
                         ? null
                         : ref
                               .read(matchProvider.notifier)
@@ -352,9 +352,9 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                if (match.isFirstInning && score.isInningOver)
+                if (match.isFirstInning && match.isInningOver)
                   _runsContainer(
-                    label: '2nd Inning',
+                    label: 'START 2ND INNING',
                     color: Color(0XFFDC2626),
                     onTap: () {
                       ref.read(matchProvider.notifier).startSecondInning();

@@ -83,5 +83,46 @@ void main() {
     final after = match.withUndo();
     expect(after.innings2!.balls.length, 1);
   });
-  
+  test('chase not completed', () {
+    final info = MatchInfo(
+      teamA: 'tiger',
+      teamB: 'Lion',
+      teamAPlayers: [],
+      teamBPlayers: [],
+      overs: 5,
+    );
+    final inning1 = MatchState.fromBalls(
+      List.generate(30, (_) => Ball(run: 1)),
+    );
+    final inning2 = MatchState.fromBalls(
+      List.generate(29, (_) => Ball(run: 1)),
+    );
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
+    expect(match.isChaseCompleted, false);
+  });
+  test('chase  completed', () {
+    final info = MatchInfo(
+      teamA: 'tiger',
+      teamB: 'Lion',
+      teamAPlayers: [],
+      teamBPlayers: [],
+      overs: 5,
+    );
+    final inning1 = MatchState.fromBalls(
+      List.generate(30, (_) => Ball(run: 1)),
+    );
+    final inning2 = MatchState.fromBalls(
+      List.generate(30, (_) => Ball(run: 2)),
+    );
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
+    expect(match.isInningOver, true);
+  });
 }

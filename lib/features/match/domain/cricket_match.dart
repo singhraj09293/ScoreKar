@@ -65,4 +65,8 @@ class CricketMatch {
     );
     return CricketMatch(info: info, innings1: innings1, innings2: secondInning);
   }
+
+  bool get isChaseCompleted => !isFirstInning && innings2!.totalRuns >= target;
+
+  bool get isInningOver => current.isInningOver || isChaseCompleted;
 }
