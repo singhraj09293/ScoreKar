@@ -29,6 +29,10 @@ class MatchController extends Notifier<CricketMatch> {
     );
   }
 
+  void startSecondInning() {
+    state = state.startSecondInning();
+  }
+
   void addBall(Ball ball) {
     state = state.withBall(ball);
   }

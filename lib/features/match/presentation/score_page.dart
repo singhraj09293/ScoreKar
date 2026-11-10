@@ -37,10 +37,12 @@ class _ScorePageState extends ConsumerState<ScorePage> {
     final info = ref.watch(matchinfoProvider);
     final battersA = info.teamAPlayers;
     final battersB = info.teamBPlayers;
-    final batter = info.battingFirst == 0 ? battersA : battersB;
+
     final tossWinnerName = info.tossWinner == 0 ? info.teamA : info.teamB;
     final choiceWord = info.tossChoice == TossChoice.bats ? 'bat' : 'bowl';
-    final score = ref.watch(matchProvider);
+    final match = ref.watch(matchProvider);
+    final score = match.current;
+    final batter = match.battingTeam == 0 ? battersA : battersB;
     final ballInOver = score.ballInCurrentOver;
     final strikerIdx = score.strikerIndex;
     final nonStrikerIdx = score.nonStrikerIndex;
@@ -72,14 +74,24 @@ class _ScorePageState extends ConsumerState<ScorePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  ('$tossWinnerName has won the toss and chose to $choiceWord First'),
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xff918A80),
-                    letterSpacing: 2,
+                if (match.isFirstInning && score.isInningOver)
+                  Text(
+                    ('$tossWinnerName has won the toss and chose to $choiceWord First'),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xff918A80),
+                      letterSpacing: 2,
+                    ),
                   ),
-                ),
+                if (!match.isFirstInning)
+                  Text(
+                    'Target Runs  ${match.target}',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xff918A80),
+                      letterSpacing: 2,
+                    ),
+                  ),
                 SizedBox(height: 10),
                 Text(
                   info.battingFirst == 0 ? info.teamA : info.teamB,
@@ -106,7 +118,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      nonStrikerIdx < batter.length
+                      strikerIdx < batter.length
                           ? '${score.runOf(strikerIdx)} (${score.ballFacedBy(strikerIdx)})'
                           : '',
                       style: TextStyle(color: Color(0xff918A80), fontSize: 18),
@@ -125,7 +137,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      strikerIdx < batter.length
+                      nonStrikerIdx < batter.length
                           ? '${score.runOf(nonStrikerIdx)} (${score.ballFacedBy(nonStrikerIdx)})'
                           : '',
                       style: TextStyle(color: Color(0xff918A80), fontSize: 18),
@@ -339,6 +351,15 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     ],
                   ),
                 ),
+                SizedBox(height: 10),
+                if (match.isFirstInning && score.isInningOver)
+                  _runsContainer(
+                    label: '2nd Inning',
+                    color: Color(0XFFDC2626),
+                    onTap: () {
+                      ref.read(matchProvider.notifier).startSecondInning();
+                    },
+                  ),
               ],
             ),
           ),

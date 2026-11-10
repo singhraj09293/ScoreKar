@@ -106,9 +106,7 @@ class _PlayerSelectionState extends ConsumerState<PlayerSelection> {
                   ref
                       .read(matchinfoProvider.notifier)
                       .setPlayer(teamAPlayers, teamBPlayers);
-                  ref
-                      .read(matchProvider.notifier)
-                      .startMatch(ref.read(matchinfoProvider).overs);
+                  ref.read(matchProvider.notifier).startMatch();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
