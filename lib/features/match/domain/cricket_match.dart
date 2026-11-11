@@ -84,4 +84,30 @@ class CricketMatch {
       return 'Match Tied';
     }
   }
+
+  String? get winnerName {
+    final first = info.battingFirst == 0 ? info.teamA : info.teamB;
+    final second = info.battingFirst == 0 ? info.teamB : info.teamA;
+    if (isFirstInning || !isInningOver) return null;
+    if (isChaseCompleted) {
+      return second;
+    } else if (innings1.totalRuns > innings2!.totalRuns) {
+      return first;
+    } else {
+      return null;
+    }
+  }
+
+  String? get marginText {
+    if (!isInningOver || isFirstInning) return null;
+    if (isChaseCompleted) {
+      final results = innings2!.maxWicket - innings2!.wickets;
+      return 'won by $results wickets';
+    } else if (innings1.totalRuns > innings2!.totalRuns) {
+      final results = innings1.totalRuns - innings2!.totalRuns;
+      return 'won by $results runs';
+    } else {
+      return 'Match Tied';
+    }
+  }
 }

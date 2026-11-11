@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scorekar/features/match/domain/match_info.dart';
-import 'package:scorekar/features/match/presentation/coin_flip.dart';
+import 'package:scorekar/features/match/presentation/screens/coin_flip.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
-import 'package:scorekar/features/match/presentation/player_selection.dart';
+import 'package:scorekar/features/match/presentation/screens/player_selection.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 class TossPage extends ConsumerStatefulWidget {

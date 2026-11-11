@@ -148,6 +148,8 @@ void main() {
       innings2: inning2,
     );
     expect(match.result, 'Lions won by 2 wickets');
+    expect(match.winnerName, 'Lions');
+    expect(match.marginText, 'won by 2 wickets');
   });
   test('Tigers won by 10 runs', () {
     final info = MatchInfo(
@@ -170,6 +172,8 @@ void main() {
       innings2: inning2,
     );
     expect(match.result, 'Tigers won by 10 runs');
+    expect(match.winnerName, 'Tigers');
+    expect(match.marginText, 'won by 10 runs');
   });
   test('Tied', () {
     final info = MatchInfo(
