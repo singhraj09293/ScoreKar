@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/domain/match_info.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
+import 'package:scorekar/features/match/presentation/screens/result_screen.dart';
 import 'package:scorekar/theme/app_colors.dart';
 import 'dart:math';
 
@@ -359,6 +360,15 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     onTap: () {
                       ref.read(matchProvider.notifier).startSecondInning();
                     },
+                  ),
+                if (!match.isFirstInning && match.isInningOver)
+                  _runsContainer(
+                    label: 'View Results',
+                    color: Color(0XFFDC2626),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => ResultScreen()),
+                    ),
                   ),
               ],
             ),

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(primary: AppColors.accent),
       ),
       debugShowCheckedModeBanner: false,
-      home: ResultScreen(),
+      home: NewMatch(),
     );
   }
 }
