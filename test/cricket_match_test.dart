@@ -125,4 +125,72 @@ void main() {
     );
     expect(match.isInningOver, true);
   });
+  test('Lion won by 2 wicket', () {
+    final info = MatchInfo(
+      teamA: 'Tigers',
+      teamB: 'Lions',
+      teamAPlayers: [],
+      teamBPlayers: [],
+      overs: 5,
+      tossWinner: 0,
+      tossChoice: TossChoice.bats,
+    );
+    final inning1 = MatchState.fromBalls(List.generate(5, (_) => Ball(run: 6)));
+    final inning2 = MatchState.fromBalls([
+      ...List.generate(5, (_) => Ball(run: 6)),
+      Ball(run: 1),
+      Ball(run: 0, type: BallType.wicket),
+      Ball(run: 0, type: BallType.wicket),
+    ], maxWicket: 4);
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
+    expect(match.result, 'Lions won by 2 wickets');
+  });
+  test('Tigers won by 10 runs', () {
+    final info = MatchInfo(
+      teamA: 'Tigers',
+      teamB: 'Lions',
+      teamAPlayers: [],
+      teamBPlayers: [],
+      overs: 5,
+      tossWinner: 0,
+      tossChoice: TossChoice.bats,
+    );
+    final inning1 = MatchState.fromBalls(List.generate(5, (_) => Ball(run: 6)));
+    final inning2 = MatchState.fromBalls([
+      ...List.generate(5, (_) => Ball(run: 4)),
+      ...List.generate(25, (_) => Ball(run: 0)),
+    ]);
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
+    expect(match.result, 'Tigers won by 10 runs');
+  });
+  test('Tied', () {
+    final info = MatchInfo(
+      teamA: 'Tigers',
+      teamB: 'Lions',
+      teamAPlayers: [],
+      teamBPlayers: [],
+      overs: 5,
+      tossWinner: 0,
+      tossChoice: TossChoice.bats,
+    );
+    final inning1 = MatchState.fromBalls(List.generate(5, (_) => Ball(run: 6)));
+    final inning2 = MatchState.fromBalls([
+      ...List.generate(5, (_) => Ball(run: 6)),
+      ...List.generate(25, (_) => Ball(run: 0)),
+    ]);
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
+    expect(match.result, 'Match Tied');
+  });
 }
