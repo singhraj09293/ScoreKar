@@ -144,4 +144,15 @@ void main() {
     expect(state.ballInCurrentOver, 4);
     expect(state.ballsRemainingInOver, 2);
   });
+  test('4 and 6 for each player', () {
+    final state = MatchState.fromBalls([
+      Ball(run: 4),
+      Ball(run: 6),
+      Ball(run: 4),
+      Ball(run: 1),
+      Ball(run: 6),
+    ]);
+    expect(state.foursOf(0), 2);
+    expect(state.sixsOf(1), 1);
+  });
 }
