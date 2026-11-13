@@ -197,4 +197,33 @@ void main() {
     );
     expect(match.result, 'Match Tied');
   });
+  test('Highest scoring battsMan', () {
+    final info = MatchInfo(
+      teamA: 'Tigers',
+      teamB: 'Lions',
+      teamAPlayers: ['Ravi', 'Amit'],
+      teamBPlayers: ['Sanjeet', 'Sainath'],
+      overs: 5,
+      tossWinner: 0,
+      tossChoice: TossChoice.bats,
+    );
+    final inning1 = MatchState.fromBalls([
+      Ball(run: 6),
+      Ball(run: 6),
+      Ball(run: 4),
+      Ball(run: 1),
+    ]);
+    final inning2 = MatchState.fromBalls([
+      ...List.generate(4, (_) => Ball(run: 2)),
+      ...List.generate(26, (_) => Ball(run: 0)),
+    ]);
+    final match = CricketMatch(
+      info: info,
+      innings1: inning1,
+      innings2: inning2,
+    );
+    final best = match.playerOfTheMatch;
+    expect(best!.name, 'Ravi');
+    expect(best.runs, 17);
+  });
 }

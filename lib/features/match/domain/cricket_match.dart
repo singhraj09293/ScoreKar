@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:scorekar/features/match/domain/ball.dart';
+import 'package:scorekar/features/match/domain/batters.dart';
 import 'package:scorekar/features/match/domain/match_info.dart';
 import 'package:scorekar/features/match/domain/match_state.dart';
 
@@ -96,6 +97,26 @@ class CricketMatch {
     } else {
       return null;
     }
+  }
+
+  Batters? get playerOfTheMatch {
+    final first = info.battingFirst == 0
+        ? info.teamAPlayers
+        : info.teamBPlayers;
+    final second = info.battingFirst == 0
+        ? info.teamBPlayers
+        : info.teamAPlayers;
+    final a = innings1.statsFor(first);
+    final b = innings2?.statsFor(second) ?? [];
+    final all = [...a, ...b];
+    if (all.isEmpty) return null;
+    var best = all.first;
+    for (final s in all) {
+      if (s.runs > best.runs || s.runs == best.runs && s.balls < best.balls) {
+        best = s;
+      }
+    }
+    return best;
   }
 
   String? get marginText {
