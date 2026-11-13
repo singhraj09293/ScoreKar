@@ -138,7 +138,7 @@ class _NewMatchState extends ConsumerState<NewMatch> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
-                  minimumSize: Size(450, 55),
+                  minimumSize: Size(double.infinity, 55),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusGeometry.circular(12),
                   ),

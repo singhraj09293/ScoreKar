@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/screens/new_match.dart';
+import 'package:scorekar/features/match/presentation/screens/player_of_the_match.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 class ResultScreen extends ConsumerStatefulWidget {
@@ -57,11 +58,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 match.winnerName ?? 'Match Tied',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 5),
               if (match.winnerName != null)
                 Text(
                   match.marginText ?? '',
-                  style: TextStyle(color: Color(0xffA98A80),fontSize: 20),
+                  style: TextStyle(color: Color(0xffA98A80), fontSize: 20),
                 ),
               SizedBox(height: 30),
               Padding(
@@ -100,7 +101,10 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                           SizedBox(width: 8),
                           Text(
                             match.innings1.overs,
-                            style: TextStyle(color: Color(0xffA98A80),fontSize: 17),
+                            style: TextStyle(
+                              color: Color(0xffA98A80),
+                              fontSize: 17,
+                            ),
                           ),
                         ],
                       ),
@@ -131,7 +135,10 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                           SizedBox(width: 8),
                           Text(
                             match.innings2!.overs,
-                            style: TextStyle(color: Color(0xffA98A80,),fontSize: 17),
+                            style: TextStyle(
+                              color: Color(0xffA98A80),
+                              fontSize: 17,
+                            ),
                           ),
                         ],
                       ),
@@ -143,7 +150,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
-                  minimumSize: Size(420, 55),
+                  minimumSize: Size(double.infinity, 55),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusGeometry.circular(12),
                   ),
@@ -161,11 +168,17 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
               SizedBox(height: 15),
-              Container(
-                color: Colors.transparent,
-                child: Text(
-                  'View Scoreboard',
-                  style: TextStyle(color: Color(0xffA98A80)),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PlayerOfTheMatch()),
+                ),
+                child: Container(
+                  color: Colors.transparent,
+                  child: Text(
+                    'View Player of the match',
+                    style: TextStyle(color: Color(0xffA98A80)),
+                  ),
                 ),
               ),
             ],
