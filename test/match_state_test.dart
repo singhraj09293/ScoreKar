@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
+import 'package:scorekar/features/match/domain/match_info.dart';
 import 'package:scorekar/features/match/domain/match_state.dart';
 
 void main() {
@@ -154,5 +155,17 @@ void main() {
     ]);
     expect(state.foursOf(0), 2);
     expect(state.sixsOf(1), 1);
+  });
+  test('Match stats of player', () {
+    final players = ['Ravi', 'Amit'];
+    final state = MatchState.fromBalls([
+      Ball(run: 4),
+      Ball(run: 1),
+      Ball(run: 6),
+    ]);
+    final stats = state.statsFor(players);
+    expect((state.statsFor(players)).length, 2);
+    expect(stats[0].name, 'Ravi');
+    expect(stats[0].runs, 5);
   });
 }

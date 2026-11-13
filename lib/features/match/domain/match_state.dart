@@ -116,10 +116,22 @@ class MatchState {
     return _replay().sixs[batter];
   }
 
-  Batters statsFor(List<String> name) {
+  List<Batters> statsFor(List<String> name) {
     final result = <Batters>[];
     for (int i = 0; i < name.length; i++) {
-      result[name]=name[i];
+      if (ballFacedBy(i)==0) {
+        continue;
+      }
+      result.add(
+        Batters(
+          name: name[i],
+          runs: runOf(i),
+          balls: ballFacedBy(i),
+          fours: foursOf(i),
+          sixs: sixsOf(i),
+        ),
+      );
     }
+    return result;
   }
 }
