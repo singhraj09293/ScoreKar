@@ -6,3 +6,7 @@ final dbProvider = Provider<AppDatabase>((ref) {
   ref.onDispose(() => db.close());
   return db;
 });
+
+final historyProvider = FutureProvider.autoDispose<List<MatchRow>>((ref) {
+  return ref.read(dbProvider).getAllMatches();
+});

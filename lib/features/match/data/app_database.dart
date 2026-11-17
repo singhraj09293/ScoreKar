@@ -43,4 +43,8 @@ class AppDatabase extends _$AppDatabase {
       ),
     );
   }
+
+  Future<List<MatchRow>> getAllMatches() async {
+    return await select(matches).get();
+  }
 }

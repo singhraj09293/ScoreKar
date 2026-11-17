@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
+import 'package:scorekar/features/match/presentation/screens/history.dart';
 import 'package:scorekar/features/match/presentation/screens/new_match.dart';
 import 'package:scorekar/features/match/presentation/screens/player_of_the_match.dart';
 import 'package:scorekar/theme/app_colors.dart';
@@ -218,6 +219,19 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   color: Colors.transparent,
                   child: Text(
                     'View Player of the match',
+                    style: TextStyle(color: Color(0xffA98A80)),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => History()),
+                ),
+                child: Container(
+                  color: Colors.transparent,
+                  child: Text(
+                    'View History',
                     style: TextStyle(color: Color(0xffA98A80)),
                   ),
                 ),
