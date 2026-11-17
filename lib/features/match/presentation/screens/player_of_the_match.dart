@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/theme/app_colors.dart';
 import 'package:share_plus/share_plus.dart';
@@ -34,11 +35,26 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
     if (bytes == null) return;
     final dir = await getTemporaryDirectory(); //temp phone ka folder
     final file = File('${dir.path}/player_card.png');
-    await file.writeAsBytes(bytes);             //bytes ko file me likho
+    await file.writeAsBytes(bytes); //bytes ko file me likho
 
     await SharePlus.instance.share(
       ShareParams(files: [XFile(file.path)], text: 'Player of the Match'),
     );
+  }
+
+  Future<void> _saveCard() async {
+    final bytes = await _captureCard();
+    if (bytes == null) return;
+    await SaverGallery.saveImage(
+      bytes,
+      fileName: 'player_card.png',
+      skipIfExists: false,
+      albumPath: 'Scorekar',
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Save to Gallery',style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),backgroundColor: AppColors.accent,),);
   }
 
   @override
@@ -55,7 +71,7 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
                   RepaintBoundary(
                     key: cardKey,
                     child: SizedBox(
-                      width: 450,
+                      width: 350,
                       child: Container(
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
@@ -209,7 +225,7 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
                           borderRadius: BorderRadiusGeometry.circular(12),
                         ),
                       ),
-                      onPressed: () =>_shareCard(),
+                      onPressed: () => _shareCard(),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         spacing: 7,
@@ -234,7 +250,9 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
                           borderRadius: BorderRadiusGeometry.circular(12),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _saveCard();
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         spacing: 7,

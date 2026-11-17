@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/presentation/screens/new_match.dart';
-import 'package:scorekar/features/match/presentation/screens/result_screen.dart';
-import 'package:scorekar/features/match/presentation/screens/score_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(ProviderScope(child: MyApp()));
 }
 

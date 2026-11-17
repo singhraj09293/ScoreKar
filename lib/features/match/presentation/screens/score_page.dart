@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scorekar/features/match/data/app_database.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/domain/match_info.dart';
+import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/screens/result_screen.dart';
 import 'package:scorekar/theme/app_colors.dart';
@@ -32,6 +34,8 @@ class _ScorePageState extends ConsumerState<ScorePage> {
         return AppColors.card;
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -365,10 +369,12 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   _runsContainer(
                     label: 'View Results',
                     color: Color(0XFFDC2626),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => ResultScreen()),
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ResultScreen()),
+                      );
+                    },
                   ),
               ],
             ),

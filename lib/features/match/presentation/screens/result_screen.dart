@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/screens/new_match.dart';
 import 'package:scorekar/features/match/presentation/screens/player_of_the_match.dart';
@@ -13,6 +14,40 @@ class ResultScreen extends ConsumerStatefulWidget {
 }
 
 class _ResultScreenState extends ConsumerState<ResultScreen> {
+  Future<void> _saveMatch() async {
+    final match = ref.read(matchProvider);
+    final teamARuns = match.info.battingFirst == 0
+        ? match.innings1.totalRuns
+        : match.innings2!.totalRuns;
+    final teamBRuns = match.info.battingFirst == 0
+        ? match.innings2!.totalRuns
+        : match.innings1.totalRuns;
+    final teamAWickets = match.info.battingFirst == 0
+        ? match.innings1.wickets
+        : match.innings2!.wickets;
+    final teamBWickets = match.info.battingFirst == 0
+        ? match.innings2!.wickets
+        : match.innings1.wickets;
+    final winner = match.winnerName ?? 'Tie';
+    await ref
+        .read(dbProvider)
+        .insertMatch(
+          teamA: match.info.teamA,
+          teamB: match.info.teamB,
+          teamAScore: teamARuns,
+          teamBScore: teamBRuns,
+          teamAWicket: teamAWickets,
+          winner: winner,
+          teamBWicket: teamBWickets,
+        );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _saveMatch();
+  }
+
   @override
   Widget build(BuildContext context) {
     final match = ref.watch(matchProvider);
@@ -27,7 +62,13 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     final firstWon = match.winnerName == firstName;
     final secondWon = match.winnerName == secondName;
     return Scaffold(
-      appBar: AppBar(title: Text('Result', style: TextStyle(fontSize: 20))),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text('Result', style: TextStyle(fontSize: 20)),
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25),
