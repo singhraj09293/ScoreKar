@@ -12,6 +12,20 @@ class History extends ConsumerStatefulWidget {
 }
 
 class _HistoryState extends ConsumerState<History> {
+  Future<void> _testBalls() async {
+    final rows = await ref.read(dbProvider).getBalls(1, 1);
+    print(rows.length);
+    for (final r in rows) {
+      print('${r.orderNo} ${r.runs} ${r.type}');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _testBalls();
+  }
+
   @override
   Widget build(BuildContext context) {
     final history = ref.watch(historyProvider);
@@ -80,7 +94,7 @@ class _HistoryState extends ConsumerState<History> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(height: 10),
                             Row(
                               children: [
                                 Text(

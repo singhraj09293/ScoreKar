@@ -566,15 +566,410 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
   }
 }
 
+class $BallRowsTable extends BallRows with TableInfo<$BallRowsTable, BallRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BallRowsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _matchIdMeta = const VerificationMeta(
+    'matchId',
+  );
+  @override
+  late final GeneratedColumn<int> matchId = GeneratedColumn<int>(
+    'match_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _inningsMeta = const VerificationMeta(
+    'innings',
+  );
+  @override
+  late final GeneratedColumn<int> innings = GeneratedColumn<int>(
+    'innings',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orderNoMeta = const VerificationMeta(
+    'orderNo',
+  );
+  @override
+  late final GeneratedColumn<int> orderNo = GeneratedColumn<int>(
+    'order_no',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _runsMeta = const VerificationMeta('runs');
+  @override
+  late final GeneratedColumn<int> runs = GeneratedColumn<int>(
+    'runs',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    matchId,
+    innings,
+    orderNo,
+    runs,
+    type,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ball_rows';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BallRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('match_id')) {
+      context.handle(
+        _matchIdMeta,
+        matchId.isAcceptableOrUnknown(data['match_id']!, _matchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_matchIdMeta);
+    }
+    if (data.containsKey('innings')) {
+      context.handle(
+        _inningsMeta,
+        innings.isAcceptableOrUnknown(data['innings']!, _inningsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_inningsMeta);
+    }
+    if (data.containsKey('order_no')) {
+      context.handle(
+        _orderNoMeta,
+        orderNo.isAcceptableOrUnknown(data['order_no']!, _orderNoMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orderNoMeta);
+    }
+    if (data.containsKey('runs')) {
+      context.handle(
+        _runsMeta,
+        runs.isAcceptableOrUnknown(data['runs']!, _runsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_runsMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  BallRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BallRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      matchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}match_id'],
+      )!,
+      innings: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}innings'],
+      )!,
+      orderNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order_no'],
+      )!,
+      runs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}runs'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+    );
+  }
+
+  @override
+  $BallRowsTable createAlias(String alias) {
+    return $BallRowsTable(attachedDatabase, alias);
+  }
+}
+
+class BallRow extends DataClass implements Insertable<BallRow> {
+  final int id;
+  final int matchId;
+  final int innings;
+  final int orderNo;
+  final int runs;
+  final String type;
+  const BallRow({
+    required this.id,
+    required this.matchId,
+    required this.innings,
+    required this.orderNo,
+    required this.runs,
+    required this.type,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['match_id'] = Variable<int>(matchId);
+    map['innings'] = Variable<int>(innings);
+    map['order_no'] = Variable<int>(orderNo);
+    map['runs'] = Variable<int>(runs);
+    map['type'] = Variable<String>(type);
+    return map;
+  }
+
+  BallRowsCompanion toCompanion(bool nullToAbsent) {
+    return BallRowsCompanion(
+      id: Value(id),
+      matchId: Value(matchId),
+      innings: Value(innings),
+      orderNo: Value(orderNo),
+      runs: Value(runs),
+      type: Value(type),
+    );
+  }
+
+  factory BallRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BallRow(
+      id: serializer.fromJson<int>(json['id']),
+      matchId: serializer.fromJson<int>(json['matchId']),
+      innings: serializer.fromJson<int>(json['innings']),
+      orderNo: serializer.fromJson<int>(json['orderNo']),
+      runs: serializer.fromJson<int>(json['runs']),
+      type: serializer.fromJson<String>(json['type']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'matchId': serializer.toJson<int>(matchId),
+      'innings': serializer.toJson<int>(innings),
+      'orderNo': serializer.toJson<int>(orderNo),
+      'runs': serializer.toJson<int>(runs),
+      'type': serializer.toJson<String>(type),
+    };
+  }
+
+  BallRow copyWith({
+    int? id,
+    int? matchId,
+    int? innings,
+    int? orderNo,
+    int? runs,
+    String? type,
+  }) => BallRow(
+    id: id ?? this.id,
+    matchId: matchId ?? this.matchId,
+    innings: innings ?? this.innings,
+    orderNo: orderNo ?? this.orderNo,
+    runs: runs ?? this.runs,
+    type: type ?? this.type,
+  );
+  BallRow copyWithCompanion(BallRowsCompanion data) {
+    return BallRow(
+      id: data.id.present ? data.id.value : this.id,
+      matchId: data.matchId.present ? data.matchId.value : this.matchId,
+      innings: data.innings.present ? data.innings.value : this.innings,
+      orderNo: data.orderNo.present ? data.orderNo.value : this.orderNo,
+      runs: data.runs.present ? data.runs.value : this.runs,
+      type: data.type.present ? data.type.value : this.type,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BallRow(')
+          ..write('id: $id, ')
+          ..write('matchId: $matchId, ')
+          ..write('innings: $innings, ')
+          ..write('orderNo: $orderNo, ')
+          ..write('runs: $runs, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, matchId, innings, orderNo, runs, type);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BallRow &&
+          other.id == this.id &&
+          other.matchId == this.matchId &&
+          other.innings == this.innings &&
+          other.orderNo == this.orderNo &&
+          other.runs == this.runs &&
+          other.type == this.type);
+}
+
+class BallRowsCompanion extends UpdateCompanion<BallRow> {
+  final Value<int> id;
+  final Value<int> matchId;
+  final Value<int> innings;
+  final Value<int> orderNo;
+  final Value<int> runs;
+  final Value<String> type;
+  const BallRowsCompanion({
+    this.id = const Value.absent(),
+    this.matchId = const Value.absent(),
+    this.innings = const Value.absent(),
+    this.orderNo = const Value.absent(),
+    this.runs = const Value.absent(),
+    this.type = const Value.absent(),
+  });
+  BallRowsCompanion.insert({
+    this.id = const Value.absent(),
+    required int matchId,
+    required int innings,
+    required int orderNo,
+    required int runs,
+    required String type,
+  }) : matchId = Value(matchId),
+       innings = Value(innings),
+       orderNo = Value(orderNo),
+       runs = Value(runs),
+       type = Value(type);
+  static Insertable<BallRow> custom({
+    Expression<int>? id,
+    Expression<int>? matchId,
+    Expression<int>? innings,
+    Expression<int>? orderNo,
+    Expression<int>? runs,
+    Expression<String>? type,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (matchId != null) 'match_id': matchId,
+      if (innings != null) 'innings': innings,
+      if (orderNo != null) 'order_no': orderNo,
+      if (runs != null) 'runs': runs,
+      if (type != null) 'type': type,
+    });
+  }
+
+  BallRowsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? matchId,
+    Value<int>? innings,
+    Value<int>? orderNo,
+    Value<int>? runs,
+    Value<String>? type,
+  }) {
+    return BallRowsCompanion(
+      id: id ?? this.id,
+      matchId: matchId ?? this.matchId,
+      innings: innings ?? this.innings,
+      orderNo: orderNo ?? this.orderNo,
+      runs: runs ?? this.runs,
+      type: type ?? this.type,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (matchId.present) {
+      map['match_id'] = Variable<int>(matchId.value);
+    }
+    if (innings.present) {
+      map['innings'] = Variable<int>(innings.value);
+    }
+    if (orderNo.present) {
+      map['order_no'] = Variable<int>(orderNo.value);
+    }
+    if (runs.present) {
+      map['runs'] = Variable<int>(runs.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BallRowsCompanion(')
+          ..write('id: $id, ')
+          ..write('matchId: $matchId, ')
+          ..write('innings: $innings, ')
+          ..write('orderNo: $orderNo, ')
+          ..write('runs: $runs, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $MatchesTable matches = $MatchesTable(this);
+  late final $BallRowsTable ballRows = $BallRowsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [matches];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [matches, ballRows];
 }
 
 typedef $$MatchesTableCreateCompanionBuilder =
@@ -858,10 +1253,228 @@ typedef $$MatchesTableProcessedTableManager =
       MatchRow,
       PrefetchHooks Function()
     >;
+typedef $$BallRowsTableCreateCompanionBuilder =
+    BallRowsCompanion Function({
+      Value<int> id,
+      required int matchId,
+      required int innings,
+      required int orderNo,
+      required int runs,
+      required String type,
+    });
+typedef $$BallRowsTableUpdateCompanionBuilder =
+    BallRowsCompanion Function({
+      Value<int> id,
+      Value<int> matchId,
+      Value<int> innings,
+      Value<int> orderNo,
+      Value<int> runs,
+      Value<String> type,
+    });
+
+class $$BallRowsTableFilterComposer
+    extends Composer<_$AppDatabase, $BallRowsTable> {
+  $$BallRowsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get innings => $composableBuilder(
+    column: $table.innings,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get orderNo => $composableBuilder(
+    column: $table.orderNo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get runs => $composableBuilder(
+    column: $table.runs,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$BallRowsTableOrderingComposer
+    extends Composer<_$AppDatabase, $BallRowsTable> {
+  $$BallRowsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get matchId => $composableBuilder(
+    column: $table.matchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get innings => $composableBuilder(
+    column: $table.innings,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get orderNo => $composableBuilder(
+    column: $table.orderNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get runs => $composableBuilder(
+    column: $table.runs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BallRowsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BallRowsTable> {
+  $$BallRowsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get matchId =>
+      $composableBuilder(column: $table.matchId, builder: (column) => column);
+
+  GeneratedColumn<int> get innings =>
+      $composableBuilder(column: $table.innings, builder: (column) => column);
+
+  GeneratedColumn<int> get orderNo =>
+      $composableBuilder(column: $table.orderNo, builder: (column) => column);
+
+  GeneratedColumn<int> get runs =>
+      $composableBuilder(column: $table.runs, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+}
+
+class $$BallRowsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BallRowsTable,
+          BallRow,
+          $$BallRowsTableFilterComposer,
+          $$BallRowsTableOrderingComposer,
+          $$BallRowsTableAnnotationComposer,
+          $$BallRowsTableCreateCompanionBuilder,
+          $$BallRowsTableUpdateCompanionBuilder,
+          (BallRow, BaseReferences<_$AppDatabase, $BallRowsTable, BallRow>),
+          BallRow,
+          PrefetchHooks Function()
+        > {
+  $$BallRowsTableTableManager(_$AppDatabase db, $BallRowsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BallRowsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BallRowsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BallRowsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> matchId = const Value.absent(),
+                Value<int> innings = const Value.absent(),
+                Value<int> orderNo = const Value.absent(),
+                Value<int> runs = const Value.absent(),
+                Value<String> type = const Value.absent(),
+              }) => BallRowsCompanion(
+                id: id,
+                matchId: matchId,
+                innings: innings,
+                orderNo: orderNo,
+                runs: runs,
+                type: type,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int matchId,
+                required int innings,
+                required int orderNo,
+                required int runs,
+                required String type,
+              }) => BallRowsCompanion.insert(
+                id: id,
+                matchId: matchId,
+                innings: innings,
+                orderNo: orderNo,
+                runs: runs,
+                type: type,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$BallRowsTable, BallRow>(table),
+                  BaseReferences<_$AppDatabase, $BallRowsTable, BallRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$BallRowsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BallRowsTable,
+      BallRow,
+      $$BallRowsTableFilterComposer,
+      $$BallRowsTableOrderingComposer,
+      $$BallRowsTableAnnotationComposer,
+      $$BallRowsTableCreateCompanionBuilder,
+      $$BallRowsTableUpdateCompanionBuilder,
+      (BallRow, BaseReferences<_$AppDatabase, $BallRowsTable, BallRow>),
+      BallRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
   $$MatchesTableTableManager get matches =>
       $$MatchesTableTableManager(_db, _db.matches);
+  $$BallRowsTableTableManager get ballRows =>
+      $$BallRowsTableTableManager(_db, _db.ballRows);
 }

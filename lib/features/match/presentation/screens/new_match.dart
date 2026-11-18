@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scorekar/features/match/domain/match_info.dart';
+import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
-import 'package:scorekar/features/match/presentation/screens/score_page.dart';
 import 'package:scorekar/features/match/presentation/screens/toss_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
@@ -57,6 +56,7 @@ class _NewMatchState extends ConsumerState<NewMatch> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final isCustom = ![5, 10, 20].contains(selectedOvers);
@@ -72,6 +72,7 @@ class _NewMatchState extends ConsumerState<NewMatch> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+         
             Text(
               'HOME TEAM',
               style: TextStyle(color: Color(0xff918A80), fontSize: 13),

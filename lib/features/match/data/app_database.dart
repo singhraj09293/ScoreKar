@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:scorekar/features/match/domain/ball.dart';
+import 'package:scorekar/features/match/domain/cricket_match.dart';
 part 'app_database.g.dart';
 
 @DataClassName('MatchRow')
@@ -15,7 +17,17 @@ class Matches extends Table {
   DateTimeColumn get playedAt => dateTime()();
 }
 
-@DriftDatabase(tables: [Matches])
+@DataClassName('BallRow')
+class BallRows extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get matchId => integer()();
+  IntColumn get innings => integer()();
+  IntColumn get orderNo => integer()();
+  IntColumn get runs => integer()();
+  TextColumn get type => text()();
+}
+
+@DriftDatabase(tables: [Matches, BallRows])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(driftDatabase(name: 'scorekar'));
   @override
@@ -48,5 +60,52 @@ class AppDatabase extends _$AppDatabase {
     return await (select(
       matches,
     )..orderBy([(t) => OrderingTerm.desc(t.playedAt)])).get();
+  }
+
+  Future<List<BallRow>> getBalls(int matchId, int inning) async {
+    return await (select(ballRows)
+          ..where((t) => t.matchId.equals(matchId) & t.innings.equals(inning))
+          ..orderBy([(t) => OrderingTerm.desc(t.orderNo)]))
+        .get();
+  }
+
+  Future<void> saveMatch(CricketMatch match) async {
+    final aFirst = match.info.battingFirst == 0;
+    final aScore = aFirst
+        ? match.innings1.totalRuns
+        : match.innings2!.totalRuns;
+    final bScore = aFirst
+        ? match.innings2!.totalRuns
+        : match.innings1.totalRuns;
+    final aWicket = aFirst ? match.innings1.wickets : match.innings2!.wickets;
+    final bWicket = aFirst ? match.innings2!.wickets : match.innings1.wickets;
+    final id = await into(matches).insert(
+      MatchesCompanion.insert(
+        teamA: match.info.teamA,
+        teamB: match.info.teamB,
+        teamAScore: aScore,
+        teamAWicket: aWicket,
+        teamBWicket: bWicket,
+        teamBScore: bScore,
+        winner: match.winnerName ?? 'Tie',
+        playedAt: DateTime.now(),
+      ),
+    );
+    await _saveBalls(id, 1, match.innings1.balls);
+    await _saveBalls(id, 2, match.innings2!.balls);
+  }
+
+  Future<void> _saveBalls(int matchId, int innings, List<Ball> balls) async {
+    for (int i = 0; i < balls.length; i++) {
+      await into(ballRows).insert(
+        BallRowsCompanion.insert(
+          matchId: matchId,
+          innings: innings,
+          orderNo: i,
+          runs: balls[i].run,
+          type: balls[i].type.name,
+        ),
+      );
+    }
   }
 }

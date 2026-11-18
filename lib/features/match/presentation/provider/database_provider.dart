@@ -10,3 +10,4 @@ final dbProvider = Provider<AppDatabase>((ref) {
 final historyProvider = FutureProvider.autoDispose<List<MatchRow>>((ref) {
   return ref.read(dbProvider).getAllMatches();
 });
+
