@@ -40,6 +40,7 @@ dependencies:
   saver_gallery: ^5.1.0
   drift: ^2.35.4
   drift_flutter: ^0.3.1
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

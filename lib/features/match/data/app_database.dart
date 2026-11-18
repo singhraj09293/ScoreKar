@@ -45,6 +45,8 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<List<MatchRow>> getAllMatches() async {
-    return await select(matches).get();
+    return await (select(
+      matches,
+    )..orderBy([(t) => OrderingTerm.desc(t.playedAt)])).get();
   }
 }
