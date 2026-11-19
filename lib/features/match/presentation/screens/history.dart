@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
+import 'package:scorekar/features/match/presentation/screens/detail_history.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 class History extends ConsumerStatefulWidget {
@@ -47,84 +48,92 @@ class _HistoryState extends ConsumerState<History> {
                     itemCount: row.length,
                     itemBuilder: (context, index) {
                       final matchs = row[index];
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: AppColors.card,
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => DetailHistory(matchId: matchs.id),
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              DateFormat('d MMM').format(matchs.playedAt),
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Color(0xffA98A80),
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.card,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                DateFormat('d MMM').format(matchs.playedAt),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xffA98A80),
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 17),
-                            Row(
-                              children: [
-                                Text(
-                                  matchs.teamA,
-                                  style: TextStyle(
-                                    fontSize: 23,
-                                    color: matchs.winner == matchs.teamA
-                                        ? Colors.white
-                                        : Colors.grey,
-                                    fontWeight: matchs.winner == matchs.teamA
-                                        ? FontWeight.bold
-                                        : FontWeight.w400,
+                              SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  Text(
+                                    matchs.teamA,
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                      color: matchs.winner == matchs.teamA
+                                          ? Colors.white
+                                          : Colors.grey,
+                                      fontWeight: matchs.winner == matchs.teamA
+                                          ? FontWeight.bold
+                                          : FontWeight.w400,
+                                    ),
                                   ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  '${matchs.teamAScore}/${matchs.teamAWicket}',
-                                  style: TextStyle(
-                                    fontSize: 21,
-                                    color: matchs.winner == matchs.teamA
-                                        ? Colors.white
-                                        : Colors.grey,
-                                    fontWeight: matchs.winner == matchs.teamA
-                                        ? FontWeight.bold
-                                        : FontWeight.w400,
+                                  Spacer(),
+                                  Text(
+                                    '${matchs.teamAScore}/${matchs.teamAWicket}',
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      color: matchs.winner == matchs.teamA
+                                          ? Colors.white
+                                          : Colors.grey,
+                                      fontWeight: matchs.winner == matchs.teamA
+                                          ? FontWeight.bold
+                                          : FontWeight.w400,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Text(
-                                  matchs.teamB,
-                                  style: TextStyle(
-                                    fontSize: 23,
-                                    fontWeight: matchs.winner == matchs.teamB
-                                        ? FontWeight.bold
-                                        : FontWeight.w400,
-                                    color: matchs.winner == matchs.teamB
-                                        ? Colors.white
-                                        : Colors.grey,
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text(
+                                    matchs.teamB,
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                      fontWeight: matchs.winner == matchs.teamB
+                                          ? FontWeight.bold
+                                          : FontWeight.w400,
+                                      color: matchs.winner == matchs.teamB
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
                                   ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  '${matchs.teamBScore}/${matchs.teamBWicket}',
-                                  style: TextStyle(
-                                    fontSize: 21,
-                                    fontWeight: matchs.winner == matchs.teamB
-                                        ? FontWeight.bold
-                                        : FontWeight.w400,
-                                    color: matchs.winner == matchs.teamB
-                                        ? Colors.white
-                                        : Colors.grey,
+                                  Spacer(),
+                                  Text(
+                                    '${matchs.teamBScore}/${matchs.teamBWicket}',
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      fontWeight: matchs.winner == matchs.teamB
+                                          ? FontWeight.bold
+                                          : FontWeight.w400,
+                                      color: matchs.winner == matchs.teamB
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

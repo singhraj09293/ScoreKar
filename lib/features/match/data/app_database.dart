@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:scorekar/features/match/data/match_mapper.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/domain/cricket_match.dart';
 part 'app_database.g.dart';
@@ -37,7 +38,6 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(driftDatabase(name: 'scorekar'));
   @override
   int get schemaVersion => 1;
-
 
   Future<List<MatchRow>> getAllMatches() async {
     return await (select(
@@ -95,5 +95,25 @@ class AppDatabase extends _$AppDatabase {
         ),
       );
     }
+  }
+
+  Future<MatchRow> getMatch(int id) async {
+    return await (select(matches)..where((t) => t.id.equals(id))).getSingle();
+  }
+
+  Future<CricketMatch> loadMatch(int id) async {
+    final row = await getMatch(id);
+    final info = infoFromRow(row);
+    final row1 = await getBalls(id, 1);
+    final row2 = await getBalls(id, 2);
+    final first = info.battingFirst == 0
+        ? info.teamAPlayers.length
+        : info.teamBPlayers.length;
+    final second = info.battingFirst == 0
+        ? info.teamBPlayers.length
+        : info.teamAPlayers.length;
+    final state1 = stateFromRows(row1, row.overs, first);
+    final state2 = stateFromRows(row2, row.overs, second);
+    return CricketMatch(info: info, innings1: state1, innings2: state2);
   }
 }
