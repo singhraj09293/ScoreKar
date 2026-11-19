@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:scorekar/features/match/domain/cricket_match.dart';
 import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
@@ -23,6 +20,7 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
     return detail.when(
       data: (d) {
         final isWinnerA = d.teamA == d.winner;
+        final isWinnerB = d.teamB == d.winner;
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -82,8 +80,8 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
                           Text(
                             d.teamB,
                             style: TextStyle(
-                              color: !isWinnerA ? Colors.white : Colors.grey,
-                              fontWeight: !isWinnerA
+                              color: isWinnerB ? Colors.white : Colors.grey,
+                              fontWeight: isWinnerB
                                   ? FontWeight.bold
                                   : FontWeight.w400,
                               fontSize: 20,
@@ -93,8 +91,8 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
                           Text(
                             '${d.teamBScore}/${d.teamBWicket}',
                             style: TextStyle(
-                              color: !isWinnerA ? Colors.white : Colors.grey,
-                              fontWeight: isWinnerA
+                              color: isWinnerB ? Colors.white : Colors.grey,
+                              fontWeight: isWinnerB
                                   ? FontWeight.bold
                                   : FontWeight.w400,
                               fontSize: 20,
@@ -112,7 +110,8 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
+                Expanded(child: Stats(id: widget.matchId)),
               ],
             ),
           ),
@@ -128,19 +127,161 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
   }
 }
 
-class Stats extends ConsumerWidget {
+class Stats extends ConsumerStatefulWidget {
   final int id;
   const Stats({super.key, required this.id});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final stats = ref.watch(matchDetailProvider(id));
+  ConsumerState<Stats> createState() => _StatsState();
+}
+
+class _StatsState extends ConsumerState<Stats> {
+  int selectedTeam = 0;
+  @override
+  Widget build(BuildContext context) {
+    final stats = ref.watch(matchDetailProvider(widget.id));
     return stats.when(
       data: (h) {
-        final selectedTeam=0;
-        return Container(
-          
-        )
+        final squad = selectedTeam == 0
+            ? h.info.teamAPlayers
+            : h.info.teamBPlayers;
+        final inning = selectedTeam == h.info.battingFirst
+            ? h.innings1
+            : h.innings2!;
+        final batters = inning.statsFor(squad);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(color: Colors.black),
+              child: Row(
+                spacing: 12,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedTeam = 0;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 10,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: selectedTeam == 0
+                              ? AppColors.accent
+                              : AppColors.card,
+                        ),
+                        child: Text(
+                          h.info.teamA,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedTeam = 1;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 10,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+
+                          color: selectedTeam == 1
+                              ? AppColors.accent
+                              : AppColors.card,
+                        ),
+                        child: Text(
+                          h.info.teamB,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'BATTING',
+              style: TextStyle(fontSize: 15, color: Color(0xffE1BFB5)),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: batters.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: AppColors.card,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          spacing: 8,
+                          children: [
+                            Text(
+                              'Batter',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffE1BFB5),
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              'R',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffE1BFB5),
+                              ),
+                            ),
+                            Text(
+                              'B',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffE1BFB5),
+                              ),
+                            ),
+                            Text(
+                              '4s',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffE1BFB5),
+                              ),
+                            ),
+                            Text(
+                              '6s',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffE1BFB5),
+                              ),
+                            ),
+                          ],
+                        ),
+                        
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
       },
       error: (e, st) {
         return Center(child: Text('$e something wrong'));
@@ -150,4 +291,26 @@ class Stats extends ConsumerWidget {
       },
     );
   }
+}
+
+Widget _playerStats(String name, int r, int b, int f, int s) {
+  return Column(
+    children: [
+      Row(
+        spacing: 8,
+        children: [
+          Text(
+            name,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Spacer(),
+          Text('$r', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
+          Text('$b', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
+          Text('$f', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
+          Text('$s', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
+        ],
+      ),
+      Divider(color: Color(0xff25252A), thickness: 0.4),
+    ],
+  );
 }

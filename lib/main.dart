@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scorekar/features/match/presentation/screens/main_screen.dart';
 import 'package:scorekar/features/match/presentation/screens/new_match.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(primary: AppColors.accent),
       ),
       debugShowCheckedModeBanner: false,
-      home: NewMatch(),
+      home: MainScreen(),
     );
   }
 }

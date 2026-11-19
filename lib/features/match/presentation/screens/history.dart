@@ -78,7 +78,7 @@ class _HistoryState extends ConsumerState<History> {
                                   Text(
                                     matchs.teamA,
                                     style: TextStyle(
-                                      fontSize: 23,
+                                      fontSize: 20,
                                       color: matchs.winner == matchs.teamA
                                           ? Colors.white
                                           : Colors.grey,
@@ -91,7 +91,7 @@ class _HistoryState extends ConsumerState<History> {
                                   Text(
                                     '${matchs.teamAScore}/${matchs.teamAWicket}',
                                     style: TextStyle(
-                                      fontSize: 21,
+                                      fontSize: 20,
                                       color: matchs.winner == matchs.teamA
                                           ? Colors.white
                                           : Colors.grey,
@@ -108,7 +108,7 @@ class _HistoryState extends ConsumerState<History> {
                                   Text(
                                     matchs.teamB,
                                     style: TextStyle(
-                                      fontSize: 23,
+                                      fontSize: 20,
                                       fontWeight: matchs.winner == matchs.teamB
                                           ? FontWeight.bold
                                           : FontWeight.w400,
@@ -121,7 +121,7 @@ class _HistoryState extends ConsumerState<History> {
                                   Text(
                                     '${matchs.teamBScore}/${matchs.teamBWicket}',
                                     style: TextStyle(
-                                      fontSize: 21,
+                                      fontSize: 20,
                                       fontWeight: matchs.winner == matchs.teamB
                                           ? FontWeight.bold
                                           : FontWeight.w400,
@@ -145,8 +145,7 @@ class _HistoryState extends ConsumerState<History> {
         );
       },
       error: (e, st) {
-        print(e);
-        print(st);
+       
         return Scaffold(body: Center(child: Text('$e something wrong')));
       },
       loading: () => Scaffold(body: Center(child: CircularProgressIndicator())),
