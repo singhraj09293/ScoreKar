@@ -103,6 +103,59 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, MatchRow> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _teamAPlayerMeta = const VerificationMeta(
+    'teamAPlayer',
+  );
+  @override
+  late final GeneratedColumn<String> teamAPlayer = GeneratedColumn<String>(
+    'team_a_player',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _teamBPlayerMeta = const VerificationMeta(
+    'teamBPlayer',
+  );
+  @override
+  late final GeneratedColumn<String> teamBPlayer = GeneratedColumn<String>(
+    'team_b_player',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _oversMeta = const VerificationMeta('overs');
+  @override
+  late final GeneratedColumn<int> overs = GeneratedColumn<int>(
+    'overs',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tossWinnerMeta = const VerificationMeta(
+    'tossWinner',
+  );
+  @override
+  late final GeneratedColumn<int> tossWinner = GeneratedColumn<int>(
+    'toss_winner',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tossChoiceMeta = const VerificationMeta(
+    'tossChoice',
+  );
+  @override
+  late final GeneratedColumn<String> tossChoice = GeneratedColumn<String>(
+    'toss_choice',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -114,6 +167,11 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, MatchRow> {
     teamBScore,
     winner,
     playedAt,
+    teamAPlayer,
+    teamBPlayer,
+    overs,
+    tossWinner,
+    tossChoice,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -206,6 +264,52 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, MatchRow> {
     } else if (isInserting) {
       context.missing(_playedAtMeta);
     }
+    if (data.containsKey('team_a_player')) {
+      context.handle(
+        _teamAPlayerMeta,
+        teamAPlayer.isAcceptableOrUnknown(
+          data['team_a_player']!,
+          _teamAPlayerMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_teamAPlayerMeta);
+    }
+    if (data.containsKey('team_b_player')) {
+      context.handle(
+        _teamBPlayerMeta,
+        teamBPlayer.isAcceptableOrUnknown(
+          data['team_b_player']!,
+          _teamBPlayerMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_teamBPlayerMeta);
+    }
+    if (data.containsKey('overs')) {
+      context.handle(
+        _oversMeta,
+        overs.isAcceptableOrUnknown(data['overs']!, _oversMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_oversMeta);
+    }
+    if (data.containsKey('toss_winner')) {
+      context.handle(
+        _tossWinnerMeta,
+        tossWinner.isAcceptableOrUnknown(data['toss_winner']!, _tossWinnerMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tossWinnerMeta);
+    }
+    if (data.containsKey('toss_choice')) {
+      context.handle(
+        _tossChoiceMeta,
+        tossChoice.isAcceptableOrUnknown(data['toss_choice']!, _tossChoiceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tossChoiceMeta);
+    }
     return context;
   }
 
@@ -251,6 +355,26 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, MatchRow> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}played_at'],
       )!,
+      teamAPlayer: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}team_a_player'],
+      )!,
+      teamBPlayer: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}team_b_player'],
+      )!,
+      overs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}overs'],
+      )!,
+      tossWinner: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}toss_winner'],
+      )!,
+      tossChoice: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}toss_choice'],
+      )!,
     );
   }
 
@@ -270,6 +394,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
   final int teamBScore;
   final String winner;
   final DateTime playedAt;
+  final String teamAPlayer;
+  final String teamBPlayer;
+  final int overs;
+  final int tossWinner;
+  final String tossChoice;
   const MatchRow({
     required this.id,
     required this.teamA,
@@ -280,6 +409,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
     required this.teamBScore,
     required this.winner,
     required this.playedAt,
+    required this.teamAPlayer,
+    required this.teamBPlayer,
+    required this.overs,
+    required this.tossWinner,
+    required this.tossChoice,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -293,6 +427,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
     map['team_b_score'] = Variable<int>(teamBScore);
     map['winner'] = Variable<String>(winner);
     map['played_at'] = Variable<DateTime>(playedAt);
+    map['team_a_player'] = Variable<String>(teamAPlayer);
+    map['team_b_player'] = Variable<String>(teamBPlayer);
+    map['overs'] = Variable<int>(overs);
+    map['toss_winner'] = Variable<int>(tossWinner);
+    map['toss_choice'] = Variable<String>(tossChoice);
     return map;
   }
 
@@ -307,6 +446,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
       teamBScore: Value(teamBScore),
       winner: Value(winner),
       playedAt: Value(playedAt),
+      teamAPlayer: Value(teamAPlayer),
+      teamBPlayer: Value(teamBPlayer),
+      overs: Value(overs),
+      tossWinner: Value(tossWinner),
+      tossChoice: Value(tossChoice),
     );
   }
 
@@ -325,6 +469,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
       teamBScore: serializer.fromJson<int>(json['teamBScore']),
       winner: serializer.fromJson<String>(json['winner']),
       playedAt: serializer.fromJson<DateTime>(json['playedAt']),
+      teamAPlayer: serializer.fromJson<String>(json['teamAPlayer']),
+      teamBPlayer: serializer.fromJson<String>(json['teamBPlayer']),
+      overs: serializer.fromJson<int>(json['overs']),
+      tossWinner: serializer.fromJson<int>(json['tossWinner']),
+      tossChoice: serializer.fromJson<String>(json['tossChoice']),
     );
   }
   @override
@@ -340,6 +489,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
       'teamBScore': serializer.toJson<int>(teamBScore),
       'winner': serializer.toJson<String>(winner),
       'playedAt': serializer.toJson<DateTime>(playedAt),
+      'teamAPlayer': serializer.toJson<String>(teamAPlayer),
+      'teamBPlayer': serializer.toJson<String>(teamBPlayer),
+      'overs': serializer.toJson<int>(overs),
+      'tossWinner': serializer.toJson<int>(tossWinner),
+      'tossChoice': serializer.toJson<String>(tossChoice),
     };
   }
 
@@ -353,6 +507,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
     int? teamBScore,
     String? winner,
     DateTime? playedAt,
+    String? teamAPlayer,
+    String? teamBPlayer,
+    int? overs,
+    int? tossWinner,
+    String? tossChoice,
   }) => MatchRow(
     id: id ?? this.id,
     teamA: teamA ?? this.teamA,
@@ -363,6 +522,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
     teamBScore: teamBScore ?? this.teamBScore,
     winner: winner ?? this.winner,
     playedAt: playedAt ?? this.playedAt,
+    teamAPlayer: teamAPlayer ?? this.teamAPlayer,
+    teamBPlayer: teamBPlayer ?? this.teamBPlayer,
+    overs: overs ?? this.overs,
+    tossWinner: tossWinner ?? this.tossWinner,
+    tossChoice: tossChoice ?? this.tossChoice,
   );
   MatchRow copyWithCompanion(MatchesCompanion data) {
     return MatchRow(
@@ -383,6 +547,19 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
           : this.teamBScore,
       winner: data.winner.present ? data.winner.value : this.winner,
       playedAt: data.playedAt.present ? data.playedAt.value : this.playedAt,
+      teamAPlayer: data.teamAPlayer.present
+          ? data.teamAPlayer.value
+          : this.teamAPlayer,
+      teamBPlayer: data.teamBPlayer.present
+          ? data.teamBPlayer.value
+          : this.teamBPlayer,
+      overs: data.overs.present ? data.overs.value : this.overs,
+      tossWinner: data.tossWinner.present
+          ? data.tossWinner.value
+          : this.tossWinner,
+      tossChoice: data.tossChoice.present
+          ? data.tossChoice.value
+          : this.tossChoice,
     );
   }
 
@@ -397,7 +574,12 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
           ..write('teamBWicket: $teamBWicket, ')
           ..write('teamBScore: $teamBScore, ')
           ..write('winner: $winner, ')
-          ..write('playedAt: $playedAt')
+          ..write('playedAt: $playedAt, ')
+          ..write('teamAPlayer: $teamAPlayer, ')
+          ..write('teamBPlayer: $teamBPlayer, ')
+          ..write('overs: $overs, ')
+          ..write('tossWinner: $tossWinner, ')
+          ..write('tossChoice: $tossChoice')
           ..write(')'))
         .toString();
   }
@@ -413,6 +595,11 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
     teamBScore,
     winner,
     playedAt,
+    teamAPlayer,
+    teamBPlayer,
+    overs,
+    tossWinner,
+    tossChoice,
   );
   @override
   bool operator ==(Object other) =>
@@ -426,7 +613,12 @@ class MatchRow extends DataClass implements Insertable<MatchRow> {
           other.teamBWicket == this.teamBWicket &&
           other.teamBScore == this.teamBScore &&
           other.winner == this.winner &&
-          other.playedAt == this.playedAt);
+          other.playedAt == this.playedAt &&
+          other.teamAPlayer == this.teamAPlayer &&
+          other.teamBPlayer == this.teamBPlayer &&
+          other.overs == this.overs &&
+          other.tossWinner == this.tossWinner &&
+          other.tossChoice == this.tossChoice);
 }
 
 class MatchesCompanion extends UpdateCompanion<MatchRow> {
@@ -439,6 +631,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
   final Value<int> teamBScore;
   final Value<String> winner;
   final Value<DateTime> playedAt;
+  final Value<String> teamAPlayer;
+  final Value<String> teamBPlayer;
+  final Value<int> overs;
+  final Value<int> tossWinner;
+  final Value<String> tossChoice;
   const MatchesCompanion({
     this.id = const Value.absent(),
     this.teamA = const Value.absent(),
@@ -449,6 +646,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
     this.teamBScore = const Value.absent(),
     this.winner = const Value.absent(),
     this.playedAt = const Value.absent(),
+    this.teamAPlayer = const Value.absent(),
+    this.teamBPlayer = const Value.absent(),
+    this.overs = const Value.absent(),
+    this.tossWinner = const Value.absent(),
+    this.tossChoice = const Value.absent(),
   });
   MatchesCompanion.insert({
     this.id = const Value.absent(),
@@ -460,6 +662,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
     required int teamBScore,
     required String winner,
     required DateTime playedAt,
+    required String teamAPlayer,
+    required String teamBPlayer,
+    required int overs,
+    required int tossWinner,
+    required String tossChoice,
   }) : teamA = Value(teamA),
        teamB = Value(teamB),
        teamAScore = Value(teamAScore),
@@ -467,7 +674,12 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
        teamBWicket = Value(teamBWicket),
        teamBScore = Value(teamBScore),
        winner = Value(winner),
-       playedAt = Value(playedAt);
+       playedAt = Value(playedAt),
+       teamAPlayer = Value(teamAPlayer),
+       teamBPlayer = Value(teamBPlayer),
+       overs = Value(overs),
+       tossWinner = Value(tossWinner),
+       tossChoice = Value(tossChoice);
   static Insertable<MatchRow> custom({
     Expression<int>? id,
     Expression<String>? teamA,
@@ -478,6 +690,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
     Expression<int>? teamBScore,
     Expression<String>? winner,
     Expression<DateTime>? playedAt,
+    Expression<String>? teamAPlayer,
+    Expression<String>? teamBPlayer,
+    Expression<int>? overs,
+    Expression<int>? tossWinner,
+    Expression<String>? tossChoice,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -489,6 +706,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
       if (teamBScore != null) 'team_b_score': teamBScore,
       if (winner != null) 'winner': winner,
       if (playedAt != null) 'played_at': playedAt,
+      if (teamAPlayer != null) 'team_a_player': teamAPlayer,
+      if (teamBPlayer != null) 'team_b_player': teamBPlayer,
+      if (overs != null) 'overs': overs,
+      if (tossWinner != null) 'toss_winner': tossWinner,
+      if (tossChoice != null) 'toss_choice': tossChoice,
     });
   }
 
@@ -502,6 +724,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
     Value<int>? teamBScore,
     Value<String>? winner,
     Value<DateTime>? playedAt,
+    Value<String>? teamAPlayer,
+    Value<String>? teamBPlayer,
+    Value<int>? overs,
+    Value<int>? tossWinner,
+    Value<String>? tossChoice,
   }) {
     return MatchesCompanion(
       id: id ?? this.id,
@@ -513,6 +740,11 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
       teamBScore: teamBScore ?? this.teamBScore,
       winner: winner ?? this.winner,
       playedAt: playedAt ?? this.playedAt,
+      teamAPlayer: teamAPlayer ?? this.teamAPlayer,
+      teamBPlayer: teamBPlayer ?? this.teamBPlayer,
+      overs: overs ?? this.overs,
+      tossWinner: tossWinner ?? this.tossWinner,
+      tossChoice: tossChoice ?? this.tossChoice,
     );
   }
 
@@ -546,6 +778,21 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
     if (playedAt.present) {
       map['played_at'] = Variable<DateTime>(playedAt.value);
     }
+    if (teamAPlayer.present) {
+      map['team_a_player'] = Variable<String>(teamAPlayer.value);
+    }
+    if (teamBPlayer.present) {
+      map['team_b_player'] = Variable<String>(teamBPlayer.value);
+    }
+    if (overs.present) {
+      map['overs'] = Variable<int>(overs.value);
+    }
+    if (tossWinner.present) {
+      map['toss_winner'] = Variable<int>(tossWinner.value);
+    }
+    if (tossChoice.present) {
+      map['toss_choice'] = Variable<String>(tossChoice.value);
+    }
     return map;
   }
 
@@ -560,7 +807,12 @@ class MatchesCompanion extends UpdateCompanion<MatchRow> {
           ..write('teamBWicket: $teamBWicket, ')
           ..write('teamBScore: $teamBScore, ')
           ..write('winner: $winner, ')
-          ..write('playedAt: $playedAt')
+          ..write('playedAt: $playedAt, ')
+          ..write('teamAPlayer: $teamAPlayer, ')
+          ..write('teamBPlayer: $teamBPlayer, ')
+          ..write('overs: $overs, ')
+          ..write('tossWinner: $tossWinner, ')
+          ..write('tossChoice: $tossChoice')
           ..write(')'))
         .toString();
   }
@@ -983,6 +1235,11 @@ typedef $$MatchesTableCreateCompanionBuilder =
       required int teamBScore,
       required String winner,
       required DateTime playedAt,
+      required String teamAPlayer,
+      required String teamBPlayer,
+      required int overs,
+      required int tossWinner,
+      required String tossChoice,
     });
 typedef $$MatchesTableUpdateCompanionBuilder =
     MatchesCompanion Function({
@@ -995,6 +1252,11 @@ typedef $$MatchesTableUpdateCompanionBuilder =
       Value<int> teamBScore,
       Value<String> winner,
       Value<DateTime> playedAt,
+      Value<String> teamAPlayer,
+      Value<String> teamBPlayer,
+      Value<int> overs,
+      Value<int> tossWinner,
+      Value<String> tossChoice,
     });
 
 class $$MatchesTableFilterComposer
@@ -1048,6 +1310,31 @@ class $$MatchesTableFilterComposer
 
   ColumnFilters<DateTime> get playedAt => $composableBuilder(
     column: $table.playedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get teamAPlayer => $composableBuilder(
+    column: $table.teamAPlayer,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get teamBPlayer => $composableBuilder(
+    column: $table.teamBPlayer,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get overs => $composableBuilder(
+    column: $table.overs,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get tossWinner => $composableBuilder(
+    column: $table.tossWinner,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tossChoice => $composableBuilder(
+    column: $table.tossChoice,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1105,6 +1392,31 @@ class $$MatchesTableOrderingComposer
     column: $table.playedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get teamAPlayer => $composableBuilder(
+    column: $table.teamAPlayer,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get teamBPlayer => $composableBuilder(
+    column: $table.teamBPlayer,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get overs => $composableBuilder(
+    column: $table.overs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get tossWinner => $composableBuilder(
+    column: $table.tossWinner,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tossChoice => $composableBuilder(
+    column: $table.tossChoice,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$MatchesTableAnnotationComposer
@@ -1150,6 +1462,29 @@ class $$MatchesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get playedAt =>
       $composableBuilder(column: $table.playedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get teamAPlayer => $composableBuilder(
+    column: $table.teamAPlayer,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get teamBPlayer => $composableBuilder(
+    column: $table.teamBPlayer,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get overs =>
+      $composableBuilder(column: $table.overs, builder: (column) => column);
+
+  GeneratedColumn<int> get tossWinner => $composableBuilder(
+    column: $table.tossWinner,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get tossChoice => $composableBuilder(
+    column: $table.tossChoice,
+    builder: (column) => column,
+  );
 }
 
 class $$MatchesTableTableManager
@@ -1189,6 +1524,11 @@ class $$MatchesTableTableManager
                 Value<int> teamBScore = const Value.absent(),
                 Value<String> winner = const Value.absent(),
                 Value<DateTime> playedAt = const Value.absent(),
+                Value<String> teamAPlayer = const Value.absent(),
+                Value<String> teamBPlayer = const Value.absent(),
+                Value<int> overs = const Value.absent(),
+                Value<int> tossWinner = const Value.absent(),
+                Value<String> tossChoice = const Value.absent(),
               }) => MatchesCompanion(
                 id: id,
                 teamA: teamA,
@@ -1199,6 +1539,11 @@ class $$MatchesTableTableManager
                 teamBScore: teamBScore,
                 winner: winner,
                 playedAt: playedAt,
+                teamAPlayer: teamAPlayer,
+                teamBPlayer: teamBPlayer,
+                overs: overs,
+                tossWinner: tossWinner,
+                tossChoice: tossChoice,
               ),
           createCompanionCallback:
               ({
@@ -1211,6 +1556,11 @@ class $$MatchesTableTableManager
                 required int teamBScore,
                 required String winner,
                 required DateTime playedAt,
+                required String teamAPlayer,
+                required String teamBPlayer,
+                required int overs,
+                required int tossWinner,
+                required String tossChoice,
               }) => MatchesCompanion.insert(
                 id: id,
                 teamA: teamA,
@@ -1221,6 +1571,11 @@ class $$MatchesTableTableManager
                 teamBScore: teamBScore,
                 winner: winner,
                 playedAt: playedAt,
+                teamAPlayer: teamAPlayer,
+                teamBPlayer: teamBPlayer,
+                overs: overs,
+                tossWinner: tossWinner,
+                tossChoice: tossChoice,
               ),
           withReferenceMapper: (p0) => p0
               .map(

@@ -17,30 +17,7 @@ class ResultScreen extends ConsumerStatefulWidget {
 class _ResultScreenState extends ConsumerState<ResultScreen> {
   Future<void> _saveMatch() async {
     final match = ref.read(matchProvider);
-    final teamARuns = match.info.battingFirst == 0
-        ? match.innings1.totalRuns
-        : match.innings2!.totalRuns;
-    final teamBRuns = match.info.battingFirst == 0
-        ? match.innings2!.totalRuns
-        : match.innings1.totalRuns;
-    final teamAWickets = match.info.battingFirst == 0
-        ? match.innings1.wickets
-        : match.innings2!.wickets;
-    final teamBWickets = match.info.battingFirst == 0
-        ? match.innings2!.wickets
-        : match.innings1.wickets;
-    final winner = match.winnerName ?? 'Tie';
-    await ref
-        .read(dbProvider)
-        .insertMatch(
-          teamA: match.info.teamA,
-          teamB: match.info.teamB,
-          teamAScore: teamARuns,
-          teamBScore: teamBRuns,
-          teamAWicket: teamAWickets,
-          winner: winner,
-          teamBWicket: teamBWickets,
-        );
+    await ref.read(dbProvider).saveMatch(match);
   }
 
   @override

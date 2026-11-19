@@ -15,6 +15,11 @@ class Matches extends Table {
   IntColumn get teamBScore => integer()();
   TextColumn get winner => text()();
   DateTimeColumn get playedAt => dateTime()();
+  TextColumn get teamAPlayer => text()();
+  TextColumn get teamBPlayer => text()();
+  IntColumn get overs => integer()();
+  IntColumn get tossWinner => integer()();
+  TextColumn get tossChoice => text()();
 }
 
 @DataClassName('BallRow')
@@ -33,28 +38,6 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  Future<void> insertMatch({
-    required String teamA,
-    required String teamB,
-    required int teamAScore,
-    required int teamBScore,
-    required int teamAWicket,
-    required String winner,
-    required int teamBWicket,
-  }) async {
-    await into(matches).insert(
-      MatchesCompanion.insert(
-        teamA: teamA,
-        teamB: teamB,
-        teamAScore: teamAScore,
-        teamAWicket: teamAWicket,
-        teamBWicket: teamBWicket,
-        teamBScore: teamBScore,
-        winner: winner,
-        playedAt: DateTime.now(),
-      ),
-    );
-  }
 
   Future<List<MatchRow>> getAllMatches() async {
     return await (select(
@@ -89,6 +72,11 @@ class AppDatabase extends _$AppDatabase {
         teamBScore: bScore,
         winner: match.winnerName ?? 'Tie',
         playedAt: DateTime.now(),
+        teamAPlayer: match.info.teamAPlayers.join(','),
+        teamBPlayer: match.info.teamBPlayers.join(','),
+        overs: match.info.overs,
+        tossWinner: match.info.tossWinner,
+        tossChoice: match.info.tossChoice.name,
       ),
     );
     await _saveBalls(id, 1, match.innings1.balls);
