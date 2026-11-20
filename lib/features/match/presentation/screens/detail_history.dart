@@ -104,7 +104,9 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
                       Divider(color: Colors.grey, thickness: 0.5),
                       SizedBox(height: 5),
                       Text(
-                        '${d.winner} won the Match',
+                        d.winner == 'Tie'
+                            ? 'Match Tie'
+                            : '${d.winner} won the Match',
                         style: TextStyle(fontSize: 20, color: AppColors.accent),
                       ),
                     ],
@@ -149,6 +151,18 @@ class _StatsState extends ConsumerState<Stats> {
             ? h.innings1
             : h.innings2!;
         final batters = inning.statsFor(squad);
+        final didNotBat = <String>[];
+        for (final naam in squad) {
+          bool khela = false;
+          for (final b in batters) {
+            if (b.name == naam) {
+              khela = true;
+            }
+          }
+          if (!khela) {
+            didNotBat.add(naam);
+          }
+        }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -311,6 +325,47 @@ class _StatsState extends ConsumerState<Stats> {
                         },
                       ),
                     ),
+                    if (didNotBat.isNotEmpty)
+                      Row(
+                        spacing: 33,
+                        children: [
+                          Text(
+                            didNotBat.join(', '),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Spacer(),
+                          Text('0', style: TextStyle(fontSize: 18)),
+                          Text(
+                            '0',
+                            style: TextStyle(
+                              color: Color(0xffE1BFB5),
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            '0',
+                            style: TextStyle(
+                              color: Color(0xffE1BFB5),
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            '0',
+                            style: TextStyle(
+                              color: Color(0xffE1BFB5),
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (didNotBat.isNotEmpty) SizedBox(height: 5),
+                    if (didNotBat.isNotEmpty)
+                      Divider(color: Colors.grey.shade600, thickness: 1),
+                    if (didNotBat.isNotEmpty) SizedBox(height: 20),
+
                     Row(
                       children: [
                         Text(

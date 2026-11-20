@@ -129,7 +129,7 @@ class MatchState {
           balls: ballFacedBy(i),
           fours: foursOf(i),
           sixs: sixsOf(i),
-          team: team!,
+          team: team ?? '',
         ),
       );
     }
