@@ -13,18 +13,33 @@ class History extends ConsumerStatefulWidget {
 }
 
 class _HistoryState extends ConsumerState<History> {
-  Future<void> _testBalls() async {
-    final rows = await ref.read(dbProvider).getBalls(1, 1);
-    print(rows.length);
-    for (final r in rows) {
-      print('${r.orderNo} ${r.runs} ${r.type}');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _testBalls();
+  void _showDialog(int id) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          'Delete this Match?',
+          style: TextStyle(color: AppColors.accent, fontSize: 18),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await ref.read(dbProvider).deleteMatch(id);
+              ref.invalidate(historyProvider);
+              if (!mounted) return;
+              Navigator.pop(context);
+            },
+            child: Text('Delete'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -55,6 +70,7 @@ class _HistoryState extends ConsumerState<History> {
                             builder: (_) => DetailHistory(matchId: matchs.id),
                           ),
                         ),
+                        onLongPress: () => _showDialog(matchs.id),
                         child: Container(
                           margin: EdgeInsets.only(bottom: 10),
                           padding: EdgeInsets.all(15),
@@ -145,7 +161,6 @@ class _HistoryState extends ConsumerState<History> {
         );
       },
       error: (e, st) {
-       
         return Scaffold(body: Center(child: Text('$e something wrong')));
       },
       loading: () => Scaffold(body: Center(child: CircularProgressIndicator())),

@@ -220,64 +220,126 @@ class _StatsState extends ConsumerState<Stats> {
               style: TextStyle(fontSize: 15, color: Color(0xffE1BFB5)),
             ),
             SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: batters.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: AppColors.card,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
+            Flexible(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.card,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      spacing: 25,
                       children: [
-                        Row(
-                          spacing: 8,
-                          children: [
-                            Text(
-                              'Batter',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xffE1BFB5),
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              'R',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xffE1BFB5),
-                              ),
-                            ),
-                            Text(
-                              'B',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xffE1BFB5),
-                              ),
-                            ),
-                            Text(
-                              '4s',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xffE1BFB5),
-                              ),
-                            ),
-                            Text(
-                              '6s',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xffE1BFB5),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          'Batter',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xffE1BFB5),
+                          ),
                         ),
-                        
+                        Spacer(),
+                        Text(
+                          'R',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xffE1BFB5),
+                          ),
+                        ),
+                        Text(
+                          'B',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xffE1BFB5),
+                          ),
+                        ),
+                        Text(
+                          '4s',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Color(0xffE1BFB5),
+                          ),
+                        ),
+                        Text(
+                          '6s',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Color(0xffE1BFB5),
+                          ),
+                        ),
                       ],
                     ),
-                  );
-                },
+                    Divider(
+                      color: Color.fromARGB(255, 58, 58, 66),
+                      thickness: 1.5,
+                    ),
+                    SizedBox(height: 10),
+                    Flexible(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: batters.length,
+                        itemBuilder: (context, index) {
+                          final sorted = List.of(batters);
+                          sorted.sort((a, b) => b.runs.compareTo(a.runs));
+                          final b = sorted[index];
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _playerStats(
+                                      b.name,
+                                      b.runs,
+                                      b.balls,
+                                      b.fours,
+                                      b.sixs,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Divider(
+                                color: Colors.grey.shade600,
+                                thickness: 1,
+                              ),
+                              SizedBox(height: 5),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Total',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          '${inning.totalRuns}/${inning.wickets}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          '(${inning.overs})',
+                          style: TextStyle(
+                            color: Color(0xffE1BFB5),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -294,23 +356,15 @@ class _StatsState extends ConsumerState<Stats> {
 }
 
 Widget _playerStats(String name, int r, int b, int f, int s) {
-  return Column(
+  return Row(
+    spacing: 34,
     children: [
-      Row(
-        spacing: 8,
-        children: [
-          Text(
-            name,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Spacer(),
-          Text('$r', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
-          Text('$b', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
-          Text('$f', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
-          Text('$s', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 15)),
-        ],
-      ),
-      Divider(color: Color(0xff25252A), thickness: 0.4),
+      Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      Spacer(),
+      Text('$r', style: TextStyle(fontSize: 18)),
+      Text('$b', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 18)),
+      Text('$f', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 18)),
+      Text('$s', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 18)),
     ],
   );
 }

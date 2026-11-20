@@ -116,4 +116,9 @@ class AppDatabase extends _$AppDatabase {
     final state2 = stateFromRows(row2, row.overs, second);
     return CricketMatch(info: info, innings1: state1, innings2: state2);
   }
+
+  Future<void> deleteMatch(int id) async {
+    await (delete(ballRows)..where((t) => t.matchId.equals(id))).go();
+    await (delete(matches)..where((t) => t.id.equals(id))).go();
+  }
 }
