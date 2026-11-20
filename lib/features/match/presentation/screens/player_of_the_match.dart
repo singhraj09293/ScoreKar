@@ -67,6 +67,7 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
   Widget build(BuildContext context) {
     final match = ref.watch(matchProvider);
     final best = match.playerOfTheMatch;
+   
     return Scaffold(
       body: Center(
         child: best == null
@@ -111,7 +112,7 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
                               ),
                             ),
                             Text(
-                              'Team Lion',
+                              best.team,
                               style: TextStyle(
                                 fontSize: 17,
                                 color: Colors.grey,

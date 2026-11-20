@@ -116,7 +116,7 @@ class MatchState {
     return _replay().sixs[batter];
   }
 
-  List<Batters> statsFor(List<String> name) {
+  List<Batters> statsFor(List<String> name,{String? team}) {
     final result = <Batters>[];
     for (int i = 0; i < name.length; i++) {
       if (ballFacedBy(i)==0) {
@@ -129,6 +129,7 @@ class MatchState {
           balls: ballFacedBy(i),
           fours: foursOf(i),
           sixs: sixsOf(i),
+          team: team!,
         ),
       );
     }

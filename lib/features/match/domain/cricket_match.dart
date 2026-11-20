@@ -100,14 +100,16 @@ class CricketMatch {
   }
 
   Batters? get playerOfTheMatch {
+    final firstTeam = info.battingFirst == 0 ? info.teamA : info.teamB;
+    final secondTeam = info.battingFirst == 0 ? info.teamB : info.teamA;
     final first = info.battingFirst == 0
         ? info.teamAPlayers
         : info.teamBPlayers;
     final second = info.battingFirst == 0
         ? info.teamBPlayers
         : info.teamAPlayers;
-    final a = innings1.statsFor(first);
-    final b = innings2?.statsFor(second) ?? [];
+    final a = innings1.statsFor(first, team: firstTeam);
+    final b = innings2?.statsFor(second, team: secondTeam) ?? [];
     final all = [...a, ...b];
     if (all.isEmpty) return null;
     var best = all.first;
