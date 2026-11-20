@@ -219,28 +219,37 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 8,
                     children: [
-                      ...score.balls
-                          .skip(max(0, score.balls.length - 6))
-                          .map(
-                            (b) => Container(
-                              width: 40,
-                              height: 40,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: b.type == BallType.wicket
-                                    ? Color(0xffDC2626)
-                                    : _runColor(b),
-                              ),
-                              child: Text(
-                                _ballLabel(b),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                      for (
+                        int i = max(0, score.balls.length - 6);
+                        i < score.balls.length;
+                        i++
+                      )
+                        TweenAnimationBuilder<double>(
+                          key: ValueKey(i),
+                          tween: Tween(begin: 0.6, end: 1.0),
+                          duration: Duration(milliseconds: 200),
+                          builder: (context, value, child) {
+                            return Transform.scale(scale: value, child: child);
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: score.balls[i].type == BallType.wicket
+                                  ? Color(0xffDC2626)
+                                  : _runColor(score.balls[i]),
+                            ),
+                            child: Text(
+                              _ballLabel(score.balls[i]),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
                           ),
+                        ),
                     ],
                   ),
                 ),

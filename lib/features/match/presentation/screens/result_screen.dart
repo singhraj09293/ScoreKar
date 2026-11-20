@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
@@ -15,6 +18,7 @@ class ResultScreen extends ConsumerStatefulWidget {
 }
 
 class _ResultScreenState extends ConsumerState<ResultScreen> {
+  late ConfettiController _controller;
   Future<void> _saveMatch() async {
     final match = ref.read(matchProvider);
     await ref.read(dbProvider).saveMatch(match);
@@ -24,6 +28,19 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
   void initState() {
     super.initState();
     _saveMatch();
+    _controller = ConfettiController(duration: Duration(seconds: 3));
+    Future.delayed(Duration(milliseconds: 400), () {
+      final match = ref.read(matchProvider);
+      if (match.winnerName != null) {
+        _controller.play();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,180 +66,219 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
             child: Text('Result', style: TextStyle(fontSize: 20)),
           ),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.card,
-                    border: Border.all(color: AppColors.accent, width: 0.5),
-                  ),
-                  child: Icon(
-                    Icons.emoji_events,
-                    color: AppColors.accent,
-                    size: 35,
-                  ),
+        body: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25,
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'MATCH RESULT',
-                  style: TextStyle(color: Color(0xffA98A80), fontSize: 20),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  match.winnerName ?? 'Match Tied',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-                ),
-                SizedBox(height: 5),
-                if (match.winnerName != null)
-                  Text(
-                    match.marginText ?? '',
-                    style: TextStyle(color: Color(0xffA98A80), fontSize: 20),
-                  ),
-                SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.card,
-                      borderRadius: BorderRadius.circular(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.card,
+                        border: Border.all(color: AppColors.accent, width: 0.5),
+                      ),
+                      child: Icon(
+                        Icons.emoji_events,
+                        color: AppColors.accent,
+                        size: 35,
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              firstName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: firstWon
-                                    ? FontWeight.w700
-                                    : FontWeight.normal,
-                                fontSize: 23,
-                                color: firstWon ? Colors.white : Colors.grey,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              '${match.innings1.totalRuns}/${match.innings1.wickets}',
-                              style: TextStyle(
-                                fontWeight: firstWon
-                                    ? FontWeight.w700
-                                    : FontWeight.w100,
-                                color: firstWon ? Colors.white : Colors.grey,
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              match.innings1.overs,
-                              style: TextStyle(
-                                color: Color(0xffA98A80),
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
+                    SizedBox(height: 10),
+                    Text(
+                      'MATCH RESULT',
+                      style: TextStyle(color: Color(0xffA98A80), fontSize: 20),
+                    ),
+                    SizedBox(height: 10),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: Duration(milliseconds: 1000),
+                      builder: (context, value, child) {
+                        return Opacity(
+                          opacity: value,
+                          child: Transform.scale(
+                            scale: 0.8 + 0.2 * value,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        match.winnerName ?? 'Match Tied',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28,
                         ),
-                        Divider(color: AppColors.background),
-                        Row(
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    if (match.winnerName != null)
+                      Text(
+                        match.marginText ?? '',
+                        style: TextStyle(
+                          color: Color(0xffA98A80),
+                          fontSize: 20,
+                        ),
+                      ),
+                    SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: AppColors.card,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
                           children: [
-                            Text(
-                              secondName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: secondWon
-                                    ? FontWeight.w700
-                                    : FontWeight.normal,
-                                fontSize: 23,
-                                color: secondWon ? Colors.white : Colors.grey,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  firstName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight: firstWon
+                                        ? FontWeight.w700
+                                        : FontWeight.normal,
+                                    fontSize: 23,
+                                    color: firstWon
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '${match.innings1.totalRuns}/${match.innings1.wickets}',
+                                  style: TextStyle(
+                                    fontWeight: firstWon
+                                        ? FontWeight.w700
+                                        : FontWeight.w100,
+                                    color: firstWon
+                                        ? Colors.white
+                                        : Colors.grey,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  match.innings1.overs,
+                                  style: TextStyle(
+                                    color: Color(0xffA98A80),
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Spacer(),
-                            Text(
-                              '${match.innings2!.totalRuns}/${match.innings2!.wickets}',
+                            Divider(color: AppColors.background),
+                            Row(
+                              children: [
+                                Text(
+                                  secondName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight: secondWon
+                                        ? FontWeight.w700
+                                        : FontWeight.normal,
+                                    fontSize: 23,
+                                    color: secondWon
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '${match.innings2!.totalRuns}/${match.innings2!.wickets}',
 
-                              style: TextStyle(
-                                fontWeight: secondWon
-                                    ? FontWeight.w700
-                                    : FontWeight.normal,
-                                fontSize: 20,
-                                color: secondWon ? Colors.white : Colors.grey,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              match.innings2!.overs,
-                              style: TextStyle(
-                                color: Color(0xffA98A80),
-                                fontSize: 17,
-                              ),
+                                  style: TextStyle(
+                                    fontWeight: secondWon
+                                        ? FontWeight.w700
+                                        : FontWeight.normal,
+                                    fontSize: 20,
+                                    color: secondWon
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  match.innings2!.overs,
+                                  style: TextStyle(
+                                    color: Color(0xffA98A80),
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 40),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.accent,
-                    minimumSize: Size(double.infinity, 55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(12),
+                    SizedBox(height: 40),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.accent,
+                        minimumSize: Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (_) => const NewMatch()),
+                          (route) => false,
+                        );
+                      },
+                      child: Text(
+                        'New Match',
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (_) => const NewMatch()),
-                      (route) => false,
-                    );
-                  },
-                  child: Text(
-                    'New Match',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
-                ),
-                SizedBox(height: 15),
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => PlayerOfTheMatch()),
-                  ),
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Text(
-                      'View Player of the match',
-                      style: TextStyle(color: Color(0xffA98A80)),
+                    SizedBox(height: 15),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => PlayerOfTheMatch()),
+                      ),
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          'View Player of the match',
+                          style: TextStyle(color: Color(0xffA98A80)),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => History()),
-                  ),
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Text(
-                      'View History',
-                      style: TextStyle(color: Color(0xffA98A80)),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => History()),
+                      ),
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          'View History',
+                          style: TextStyle(color: Color(0xffA98A80)),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            ConfettiWidget(
+              confettiController: _controller,
+              blastDirection: pi / 2,
+            ),
+          ],
         ),
       ),
     );

@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.20.2
   google_fonts: ^8.2.1
   vibration: ^3.2.1
+  confetti: ^0.8.0
 
 dev_dependencies:
   flutter_test:
