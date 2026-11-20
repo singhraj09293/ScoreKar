@@ -52,9 +52,15 @@ class _PlayerOfTheMatchState extends ConsumerState<PlayerOfTheMatch> {
       albumPath: 'Scorekar',
     );
     if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Save to Gallery',style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),backgroundColor: AppColors.accent,),);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Save to Gallery',
+          style: TextStyle(fontSize: 18, color: Colors.black),
+        ),
+        backgroundColor: AppColors.accent,
+      ),
+    );
   }
 
   @override

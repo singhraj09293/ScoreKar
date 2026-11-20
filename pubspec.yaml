@@ -41,6 +41,7 @@ dependencies:
   drift: ^2.35.4
   drift_flutter: ^0.3.1
   intl: ^0.20.2
+  google_fonts: ^8.2.1
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +62,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+   
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -83,6 +84,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter_24pt-Regular.ttf
+        - asset: assets/fonts/Inter_24pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter_24pt-Bold.ttf
+          weight: 700
   # fonts:
   #   - family: Schyler
   #     fonts:

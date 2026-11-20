@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:scorekar/features/match/presentation/screens/main_screen.dart';
-import 'package:scorekar/features/match/presentation/screens/new_match.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
 void main() async {
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
         brightness: Brightness.dark,
         scaffoldBackgroundColor: AppColors.background,
         cardTheme: CardThemeData(color: AppColors.card),

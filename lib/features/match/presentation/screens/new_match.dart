@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/screens/toss_page.dart';
 import 'package:scorekar/theme/app_colors.dart';
@@ -115,7 +114,7 @@ class _NewMatchState extends ConsumerState<NewMatch> {
               'OVERS',
               style: TextStyle(color: Color(0xff918A80), fontSize: 13),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Row(
               spacing: 8,
               children: [
