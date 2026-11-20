@@ -47,6 +47,20 @@ class _HistoryState extends ConsumerState<History> {
     final history = ref.watch(historyProvider);
     return history.when(
       data: (row) {
+        if (row.isEmpty) {
+          return Scaffold(
+            body: Center(
+              child: Text(
+                'No matches yet!',
+                style: TextStyle(
+                  color: Color(0xffA98A80),
+                  fontSize: 25,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+          );
+        }
         return Scaffold(
           appBar: AppBar(
             title: Text(

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scorekar/features/match/data/app_database.dart';
 import 'package:scorekar/features/match/domain/ball.dart';
 import 'package:scorekar/features/match/domain/match_info.dart';
-import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/features/match/presentation/provider/match_controller.dart';
 import 'package:scorekar/features/match/presentation/screens/result_screen.dart';
 import 'package:scorekar/theme/app_colors.dart';
 import 'dart:math';
+
+import 'package:vibration/vibration.dart';
 
 class ScorePage extends ConsumerStatefulWidget {
   final String a;
@@ -34,8 +35,6 @@ class _ScorePageState extends ConsumerState<ScorePage> {
         return AppColors.card;
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -150,9 +149,13 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                Text(
-                  '${score.totalRuns}/${score.wickets}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 200),
+                  child: Text(
+                    '${score.totalRuns}/${score.wickets}',
+                    key: ValueKey('${score.totalRuns}/${score.wickets}'),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -253,6 +256,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                               ? Colors.grey
                               : AppColors.card,
                           onTap: () {
+                            Vibration.vibrate(duration: 30);
                             match.isInningOver
                                 ? null
                                 : ref
@@ -277,6 +281,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                               ? Colors.grey
                               : (r == 4 ? AppColors.blue : AppColors.accent),
                           onTap: () {
+                            Vibration.vibrate(duration: 30);
                             match.isInningOver
                                 ? null
                                 : ref
@@ -300,6 +305,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                             ? Colors.grey
                             : AppColors.card,
                         onTap: () {
+                          Vibration.vibrate(duration: 30);
                           match.isInningOver
                               ? null
                               : ref
@@ -315,6 +321,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                             ? Colors.grey
                             : AppColors.card,
                         onTap: () {
+                          Vibration.vibrate(duration: 30);
                           match.isInningOver
                               ? null
                               : ref
@@ -332,6 +339,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                   label: 'WICKET',
                   color: match.isInningOver ? Colors.grey : Color(0XFFDC2626),
                   onTap: () {
+                    Vibration.vibrate(duration: 50);
                     match.isInningOver
                         ? null
                         : ref
@@ -342,6 +350,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
+                    HapticFeedback.selectionClick();
                     ref.read(matchProvider.notifier).undo();
                   },
                   child: Row(
@@ -401,7 +410,6 @@ Widget _runsContainer({
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-
         color: color,
         border: Border.all(
           color: label == '4' || label == '6' || label == 'WICKET'
