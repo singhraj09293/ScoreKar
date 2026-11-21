@@ -110,7 +110,7 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
                               ? 'Match Tie'
                               : '${d.winner} won the Match',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: AppColors.accent,
                           ),
                         ),
@@ -236,7 +236,7 @@ class _StatsState extends ConsumerState<Stats> {
               ),
             ),
             SizedBox(height: 20),
-            RunsPerOver(overs: inning.overStats),
+            RunsPerOver(key: ValueKey(selectedTeam), overs: inning.overStats),
             SizedBox(height: 20),
             Text(
               'BATTING',
@@ -458,37 +458,58 @@ class RunsPerOver extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (int i = 0; i < overs.length; i++)
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '${overs[i].runs}',
-                      style: TextStyle(
-                        color: maxrun == overs[i].runs
-                            ? Colors.white
-                            : Colors.grey,
-                        fontWeight: overs[i].runs == maxrun
-                            ? FontWeight.bold
-                            : FontWeight.w400,
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: Duration(milliseconds: 700),
+            curve: Curves.easeOut,
+            builder: (context, value, child) => Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                for (int i = 0; i < overs.length; i++)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (overs[i].wickets > 0)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (int w = 0; w < overs[i].wickets; w++)
+                              Container(
+                                width: 8,
+                                height: 8,
+                                margin: EdgeInsets.symmetric(horizontal: 1),
+                                decoration: BoxDecoration(
+                                  color: Color(0xffEF4444),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                          ],
+                        ),
+                      Text(
+                        '${overs[i].runs}',
+                        style: TextStyle(
+                          color: maxrun == overs[i].runs
+                              ? Colors.white
+                              : Colors.grey,
+                          fontWeight: overs[i].runs == maxrun
+                              ? FontWeight.bold
+                              : FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Container(
-                      width: 30,
-                      height: overs[i].runs / maxrun * 100,
-                      decoration: BoxDecoration(
-                        color: AppColors.accent,
-                        borderRadius: BorderRadius.circular(8),
+                      SizedBox(height: 4),
+                      Container(
+                        width: 30,
+                        height: overs[i].runs / maxrun * 100 * value,
+                        decoration: BoxDecoration(
+                          color: AppColors.accent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-            ],
+                    ],
+                  ),
+              ],
+            ),
           ),
           Divider(color: Colors.grey, thickness: 0.5),
           Row(
@@ -498,11 +519,17 @@ class RunsPerOver extends StatelessWidget {
                 SizedBox(width: 30, child: Center(child: Text('${i + 1}'))),
             ],
           ),
-          SizedBox(height: 5,),
+          SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('OVER', style: TextStyle(color: Color(0xff464951))),
+              Text(
+                'OVER',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ],
