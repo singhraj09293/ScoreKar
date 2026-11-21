@@ -168,4 +168,27 @@ void main() {
     expect(stats[0].name, 'Ravi');
     expect(stats[0].runs, 5);
   });
+  test('overStats splits legal balls into overs', () {
+  final m = MatchState.fromBalls([
+    Ball(run: 1), Ball(run: 4), Ball(run: 0),
+    Ball(run: 0), Ball(run: 1), Ball(run: 0),
+    Ball(run: 6),
+  ], maxOvers: 5, maxWicket: 10);
+  final o = m.overStats;
+  expect(o.length, 2);
+  expect(o[0].runs, 6);
+  expect(o[1].runs, 6);
+});
+
+test('overStats runs add up to totalRuns', () {
+  final m = MatchState.fromBalls([
+    Ball(run: 1), Ball(run: 0, type: BallType.wide),
+    Ball(run: 4), Ball(run: 0, type: BallType.wicket),
+  ], maxOvers: 5, maxWicket: 10);
+  int sum = 0;
+  for (final s in m.overStats) {
+    sum += s.runs;
+  }
+  expect(sum, m.totalRuns);
+});
 }

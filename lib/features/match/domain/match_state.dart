@@ -1,4 +1,5 @@
 import 'package:scorekar/features/match/domain/batters.dart';
+import 'package:scorekar/features/match/domain/over_stats.dart';
 
 import 'ball.dart';
 
@@ -116,10 +117,10 @@ class MatchState {
     return _replay().sixs[batter];
   }
 
-  List<Batters> statsFor(List<String> name,{String? team}) {
+  List<Batters> statsFor(List<String> name, {String? team}) {
     final result = <Batters>[];
     for (int i = 0; i < name.length; i++) {
-      if (ballFacedBy(i)==0) {
+      if (ballFacedBy(i) == 0) {
         continue;
       }
       result.add(
@@ -132,6 +133,35 @@ class MatchState {
           team: team ?? '',
         ),
       );
+    }
+    return result;
+  }
+
+  List<OverStat> get overStats {
+    final result = <OverStat>[];
+    int runs = 0;
+    int wickets = 0;
+    int legal = 0;
+    for (final b in balls) {
+      runs += b.run;
+      if (b.type == BallType.wide || b.type == BallType.noBall) {
+        runs += 1;
+      }
+      if (b.type == BallType.wicket) {
+        wickets += 1;
+      }
+      if (b.isLegal) {
+        legal += 1;
+      }
+      if (legal == 6) {
+        result.add(OverStat(runs, wickets));
+        runs = 0;
+        wickets = 0;
+        legal = 0;
+      }
+    }
+    if (legal > 0 || runs > 0 || wickets > 0) {
+      result.add(OverStat(runs, wickets));
     }
     return result;
   }

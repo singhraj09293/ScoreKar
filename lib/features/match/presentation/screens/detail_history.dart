@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:scorekar/features/match/domain/over_stats.dart';
 import 'package:scorekar/features/match/presentation/provider/database_provider.dart';
 import 'package:scorekar/theme/app_colors.dart';
 
@@ -30,91 +31,96 @@ class _DetailHistoryState extends ConsumerState<DetailHistory> {
           ),
           body: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColors.card,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        DateFormat('d MMM').format(d.playedAt),
-                        style: TextStyle(
-                          color: Color(0xffE1BFB5),
-                          fontSize: 15,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.card,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          DateFormat('d MMM').format(d.playedAt),
+                          style: TextStyle(
+                            color: Color(0xffE1BFB5),
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text(
-                            d.teamA,
-                            style: TextStyle(
-                              color: isWinnerA ? Colors.white : Colors.grey,
-                              fontWeight: isWinnerA
-                                  ? FontWeight.bold
-                                  : FontWeight.w400,
-                              fontSize: 20,
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              d.teamA,
+                              style: TextStyle(
+                                color: isWinnerA ? Colors.white : Colors.grey,
+                                fontWeight: isWinnerA
+                                    ? FontWeight.bold
+                                    : FontWeight.w400,
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Text(
-                            '${d.teamAScore}/${d.teamAWicket}',
-                            style: TextStyle(
-                              color: isWinnerA ? Colors.white : Colors.grey,
-                              fontWeight: isWinnerA
-                                  ? FontWeight.bold
-                                  : FontWeight.w400,
-                              fontSize: 20,
+                            Spacer(),
+                            Text(
+                              '${d.teamAScore}/${d.teamAWicket}',
+                              style: TextStyle(
+                                color: isWinnerA ? Colors.white : Colors.grey,
+                                fontWeight: isWinnerA
+                                    ? FontWeight.bold
+                                    : FontWeight.w400,
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text(
-                            d.teamB,
-                            style: TextStyle(
-                              color: isWinnerB ? Colors.white : Colors.grey,
-                              fontWeight: isWinnerB
-                                  ? FontWeight.bold
-                                  : FontWeight.w400,
-                              fontSize: 20,
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              d.teamB,
+                              style: TextStyle(
+                                color: isWinnerB ? Colors.white : Colors.grey,
+                                fontWeight: isWinnerB
+                                    ? FontWeight.bold
+                                    : FontWeight.w400,
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Text(
-                            '${d.teamBScore}/${d.teamBWicket}',
-                            style: TextStyle(
-                              color: isWinnerB ? Colors.white : Colors.grey,
-                              fontWeight: isWinnerB
-                                  ? FontWeight.bold
-                                  : FontWeight.w400,
-                              fontSize: 20,
+                            Spacer(),
+                            Text(
+                              '${d.teamBScore}/${d.teamBWicket}',
+                              style: TextStyle(
+                                color: isWinnerB ? Colors.white : Colors.grey,
+                                fontWeight: isWinnerB
+                                    ? FontWeight.bold
+                                    : FontWeight.w400,
+                                fontSize: 20,
+                              ),
                             ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Divider(color: Colors.grey, thickness: 0.5),
+                        SizedBox(height: 5),
+                        Text(
+                          d.winner == 'Tie'
+                              ? 'Match Tie'
+                              : '${d.winner} won the Match',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppColors.accent,
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Divider(color: Colors.grey, thickness: 0.5),
-                      SizedBox(height: 5),
-                      Text(
-                        d.winner == 'Tie'
-                            ? 'Match Tie'
-                            : '${d.winner} won the Match',
-                        style: TextStyle(fontSize: 20, color: AppColors.accent),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                Expanded(child: Stats(id: widget.matchId)),
-              ],
+                  SizedBox(height: 20),
+                  Stats(id: widget.matchId),
+                ],
+              ),
             ),
           ),
         );
@@ -165,6 +171,7 @@ class _StatsState extends ConsumerState<Stats> {
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: EdgeInsets.all(5),
@@ -229,6 +236,8 @@ class _StatsState extends ConsumerState<Stats> {
               ),
             ),
             SizedBox(height: 20),
+            RunsPerOver(overs: inning.overStats),
+            SizedBox(height: 20),
             Text(
               'BATTING',
               style: TextStyle(fontSize: 15, color: Color(0xffE1BFB5)),
@@ -290,40 +299,36 @@ class _StatsState extends ConsumerState<Stats> {
                       thickness: 1.5,
                     ),
                     SizedBox(height: 10),
-                    Flexible(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: batters.length,
-                        itemBuilder: (context, index) {
-                          final sorted = List.of(batters);
-                          sorted.sort((a, b) => b.runs.compareTo(a.runs));
-                          final b = sorted[index];
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _playerStats(
-                                      b.name,
-                                      b.runs,
-                                      b.balls,
-                                      b.fours,
-                                      b.sixs,
-                                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: batters.length,
+                      itemBuilder: (context, index) {
+                        final sorted = List.of(batters);
+                        sorted.sort((a, b) => b.runs.compareTo(a.runs));
+                        final b = sorted[index];
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _playerStats(
+                                    b.name,
+                                    b.runs,
+                                    b.balls,
+                                    b.fours,
+                                    b.sixs,
                                   ),
-                                ],
-                              ),
-                              SizedBox(height: 5),
-                              Divider(
-                                color: Colors.grey.shade600,
-                                thickness: 1,
-                              ),
-                              SizedBox(height: 5),
-                            ],
-                          );
-                        },
-                      ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Divider(color: Colors.grey.shade600, thickness: 1),
+                            SizedBox(height: 5),
+                          ],
+                        );
+                      },
                     ),
                     if (didNotBat.isNotEmpty)
                       Row(
@@ -422,4 +427,86 @@ Widget _playerStats(String name, int r, int b, int f, int s) {
       Text('$s', style: TextStyle(color: Color(0xffE1BFB5), fontSize: 18)),
     ],
   );
+}
+
+class RunsPerOver extends StatelessWidget {
+  final List<OverStat> overs;
+  const RunsPerOver({super.key, required this.overs});
+
+  @override
+  Widget build(BuildContext context) {
+    int maxrun = 0;
+    for (int i = 0; i < overs.length; i++) {
+      if (overs[i].runs > maxrun) {
+        maxrun = overs[i].runs;
+      }
+    }
+    if (maxrun == 0) maxrun = 1;
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0, top: 10),
+            child: Text(
+              'Runs per over',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              for (int i = 0; i < overs.length; i++)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${overs[i].runs}',
+                      style: TextStyle(
+                        color: maxrun == overs[i].runs
+                            ? Colors.white
+                            : Colors.grey,
+                        fontWeight: overs[i].runs == maxrun
+                            ? FontWeight.bold
+                            : FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Container(
+                      width: 30,
+                      height: overs[i].runs / maxrun * 100,
+                      decoration: BoxDecoration(
+                        color: AppColors.accent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          Divider(color: Colors.grey, thickness: 0.5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              for (int i = 0; i < overs.length; i++)
+                SizedBox(width: 30, child: Center(child: Text('${i + 1}'))),
+            ],
+          ),
+          SizedBox(height: 5,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('OVER', style: TextStyle(color: Color(0xff464951))),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
