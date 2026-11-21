@@ -55,120 +55,178 @@ class _NewMatchState extends ConsumerState<NewMatch> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final isCustom = ![5, 10, 20].contains(selectedOvers);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           'New Match',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-         
-            Text(
-              'HOME TEAM',
-              style: TextStyle(color: Color(0xff918A80), fontSize: 13),
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Image.asset(
+              'assets/images/hero.jpg',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+              color: Colors.black.withValues(alpha: 0.45),
+              colorBlendMode: BlendMode.darken,
             ),
-            SizedBox(height: 5),
-            TextField(
-              controller: teamA,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColors.card,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF0E0F11),
+                    Colors.transparent,
+                    Color(0xFF0E0F11),
+                  ],
+                  stops: [0.0, 0.3, 1.0],
                 ),
-                hintText: 'Team A',
-                hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              'AWAY TEAM',
-              style: TextStyle(color: Color(0xff918A80), fontSize: 13),
-            ),
-            SizedBox(height: 5),
-            TextField(
-              controller: teamB,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColors.card,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-                hintText: 'Team B',
-                hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 18,
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'OVERS',
-              style: TextStyle(color: Color(0xff918A80), fontSize: 13),
-            ),
-            SizedBox(height: 10),
-            Row(
-              spacing: 8,
-              children: [
-                ...[5, 10, 20].map(
-                  (n) => _chip('$n', selectedOvers == n, () {
-                    setState(() {
-                      selectedOvers = n;
-                    });
-                  }),
-                ),
-                _chip(
-                  isCustom ? '$selectedOvers' : 'Custom',
-                  isCustom,
-                  pickCustomOvers,
-                ),
-              ],
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
-                  minimumSize: Size(double.infinity, 55),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'HOME TEAM',
+                    style: TextStyle(color: Color(0xff918A80), fontSize: 13),
                   ),
-                ),
-                onPressed: () {
-                  ref
-                      .read(matchinfoProvider.notifier)
-                      .setTeam(
-                        teamA.text.trim(),
-                        teamB.text.trim(),
-                        selectedOvers,
-                      );
+                  SizedBox(height: 5),
+                  TextField(
+                    controller: teamA,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColors.card,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: 'Team A',
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'AWAY TEAM',
+                    style: TextStyle(color: Color(0xff918A80), fontSize: 13),
+                  ),
+                  SizedBox(height: 5),
+                  TextField(
+                    controller: teamB,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColors.card,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: 'Team B',
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'OVERS',
+                    style: TextStyle(color: Color(0xff918A80), fontSize: 13),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    spacing: 8,
+                    children: [
+                      ...[5, 10, 20].map(
+                        (n) => _chip('$n', selectedOvers == n, () {
+                          setState(() {
+                            selectedOvers = n;
+                          });
+                        }),
+                      ),
+                      _chip(
+                        isCustom ? '$selectedOvers' : 'Custom',
+                        isCustom,
+                        pickCustomOvers,
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Icon(
+                        Icons.sports_cricket,
+                        size: 200,
+                        color: AppColors.accent.withValues(alpha: 0.12),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.accent,
+                        minimumSize: Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        ref
+                            .read(matchinfoProvider.notifier)
+                            .setTeam(
+                              teamA.text.trim(),
+                              teamB.text.trim(),
+                              selectedOvers,
+                            );
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => TossPage()),
-                  );
-                },
-                child: Text(
-                  'Start Match',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => TossPage()),
+                        );
+                      },
+                      child: Text(
+                        'Start Match',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
