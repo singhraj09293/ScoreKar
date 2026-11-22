@@ -250,20 +250,23 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                         MaterialPageRoute(builder: (_) => PlayerOfTheMatch()),
                       ),
                       child: Container(
-                        color: Colors.transparent,
+                        padding: EdgeInsets.all(10),
+                        color: AppColors.card,
                         child: Text(
                           'View Player of the match',
                           style: TextStyle(color: Color(0xffA98A80)),
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
                     GestureDetector(
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => History()),
                       ),
                       child: Container(
-                        color: Colors.transparent,
+                        padding: EdgeInsets.all(10),
+                        color: AppColors.card,
                         child: Text(
                           'View History',
                           style: TextStyle(color: Color(0xffA98A80)),

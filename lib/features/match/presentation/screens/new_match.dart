@@ -181,10 +181,13 @@ class _NewMatchState extends ConsumerState<NewMatch> {
                   ),
                   Expanded(
                     child: Center(
-                      child: Icon(
-                        Icons.sports_cricket,
-                        size: 200,
-                        color: AppColors.accent.withValues(alpha: 0.12),
+                      child: Container(
+                        height: 8,
+                        width: 8,
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withValues(alpha: 0.24),
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ),
