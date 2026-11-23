@@ -10,11 +10,11 @@ Scorekar is a Flutter app built for gully cricket: set up a match in seconds, sc
 
 | New match | Live scoring | Result | Player of the Match |
 |:---:|:---:|:---:|:---:|
-| ![New match](docs/new_match.png) | ![Scoring](docs/scoring.png) | ![Result](docs/result.png) | ![POTM card](docs/potm.png) |
+| ![New match](docs/new_match.jpg) | ![Scoring](docs/scoring.jpg) | ![Result](docs/result.jpg) | ![POTM card](docs/potm.jpg) |
 
 | History | Match detail |
 |:---:|:---:|
-| ![History](docs/history.png) | ![Detail](docs/detail.png) |
+| ![History](docs/history.jpg) | ![Detail](docs/detail.jpg) |
 
 ## Features
 
