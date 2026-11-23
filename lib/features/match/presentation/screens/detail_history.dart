@@ -335,7 +335,7 @@ class _StatsState extends ConsumerState<Stats> {
                         spacing: 33,
                         children: [
                           Text(
-                            didNotBat.join(', '),
+                            didNotBat.join(','),
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

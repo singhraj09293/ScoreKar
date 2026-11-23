@@ -95,7 +95,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     SizedBox(height: 10),
                     Text(
                       'MATCH RESULT',
-                      style: TextStyle(color: Color(0xffA98A80), fontSize: 20),
+                      style: TextStyle(color: Color(0xffA98A80), fontSize: 18),
                     ),
                     SizedBox(height: 10),
                     TweenAnimationBuilder<double>(
@@ -251,7 +251,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       child: Container(
                         padding: EdgeInsets.all(10),
-                        color: AppColors.card,
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColors.card,
+                        ),
                         child: Text(
                           'View Player of the match',
                           style: TextStyle(color: Color(0xffA98A80)),
@@ -266,7 +270,10 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       child: Container(
                         padding: EdgeInsets.all(10),
-                        color: AppColors.card,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColors.card,
+                        ),
                         child: Text(
                           'View History',
                           style: TextStyle(color: Color(0xffA98A80)),

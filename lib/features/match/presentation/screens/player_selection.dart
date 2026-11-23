@@ -167,8 +167,9 @@ class _SquadEditorState extends State<SquadEditor> {
       ).showSnackBar(SnackBar(content: Text('$name is already added')));
       return;
     }
-
-    setState(() => widget.players.add(name));
+    final cleaned = name.replaceAll(',', '').trim();
+    if (cleaned.isEmpty) return;
+    setState(() => widget.players.add(cleaned));
     widget.onChanged();
     controller.clear();
   }
@@ -258,6 +259,11 @@ class _SquadEditorState extends State<SquadEditor> {
                 ),
               ),
             ),
+          ),
+          SizedBox(height: 7),
+          Text(
+            'Min 2, Max 11 Players ',
+            style: TextStyle(color: Color(0xffA98A80), fontSize: 15),
           ),
         ],
       ),

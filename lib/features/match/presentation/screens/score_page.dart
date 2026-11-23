@@ -81,6 +81,7 @@ class _ScorePageState extends ConsumerState<ScorePage> {
                 if (match.isFirstInning && score.isInningOver)
                   Text(
                     ('$tossWinnerName has won the toss and chose to $choiceWord First'),
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
                       color: Color(0xff918A80),

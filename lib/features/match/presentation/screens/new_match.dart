@@ -202,13 +202,25 @@ class _NewMatchState extends ConsumerState<NewMatch> {
                         ),
                       ),
                       onPressed: () {
+                        final homeName = teamA.text.trim().isEmpty
+                            ? 'TeamA'
+                            : teamA.text.trim();
+                        final awayName = teamB.text.trim().isEmpty
+                            ? 'TeamB'
+                            : teamB.text.trim();
+
+                        if (homeName.toLowerCase() == awayName.toLowerCase()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Team names must be different'),
+                            ),
+                          );
+                          return;
+                        }
+
                         ref
                             .read(matchinfoProvider.notifier)
-                            .setTeam(
-                              teamA.text.trim(),
-                              teamB.text.trim(),
-                              selectedOvers,
-                            );
+                            .setTeam(homeName, awayName, selectedOvers);
 
                         Navigator.push(
                           context,
